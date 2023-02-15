@@ -15,6 +15,13 @@ export default class LoginController {
   ) {
     try {
       const address = verifyMessage(message, signature)
+      const previousToken = await TokenModel.find({
+        token,
+        address: { $ne: address },
+      })
+      if (previousToken) {
+        await TokenModel.deleteMany(previousToken)
+      }
       const existingToken = await TokenModel.find({ token, address })
       if (!existingToken) {
         await TokenModel.create({ token, address })
