@@ -1,4 +1,4 @@
-import { Body, Controller, Ctx, Post } from 'amala'
+import { Body, Controller, Ctx, Delete, Post } from 'amala'
 import { Context } from 'koa'
 import { TokenModel } from '@/models/Token'
 import { badRequest } from '@hapi/boom'
@@ -19,6 +19,20 @@ export default class LoginController {
       if (!existingToken) {
         await TokenModel.create({ token, address })
       }
+      return { success: true }
+    } catch {
+      return ctx.throw(badRequest('Invalid signature'))
+    }
+  }
+
+  @Delete('/')
+  async deleteToken(
+    @Body({ required: true }) { token, message, signature }: Signature & Token,
+    @Ctx() ctx: Context
+  ) {
+    try {
+      const address = verifyMessage(message, signature)
+      await TokenModel.deleteMany({ token, address })
       return { success: true }
     } catch {
       return ctx.throw(badRequest('Invalid signature'))
