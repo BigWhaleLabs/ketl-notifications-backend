@@ -7,7 +7,7 @@ import Signature from '@/validators/Signature'
 import Token from '@/validators/Token'
 
 @Controller('/token')
-export default class LoginController {
+export default class TokenController {
   @Post('/')
   async addToken(
     @Body({ required: true }) { token, message, signature }: Signature & Token,
