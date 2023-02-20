@@ -20,14 +20,15 @@ export default class TokenController {
         address: { $ne: address },
       })
       if (previousToken) {
-        await TokenModel.deleteMany(previousToken)
+        await TokenModel.deleteMany({ token: previousToken })
       }
       const existingToken = await TokenModel.find({ token, address })
       if (!existingToken) {
         await TokenModel.create({ token, address })
       }
       return { success: true }
-    } catch {
+    } catch (e) {
+      console.error(e)
       return ctx.throw(badRequest('Invalid signature'))
     }
   }
