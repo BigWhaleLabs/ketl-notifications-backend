@@ -1,4 +1,4 @@
-import { Body, Controller, Ctx, Delete, Post } from 'amala'
+import { Body, Controller, Ctx, Delete, Post, Query } from 'amala'
 import { Context } from 'koa'
 import { TokenModel } from '@/models/Token'
 import { badRequest } from '@hapi/boom'
@@ -15,14 +15,14 @@ export default class TokenController {
   ) {
     try {
       const address = verifyMessage(message, signature)
-      const previousToken = await TokenModel.find({
+      const previousToken = await TokenModel.findOne({
         token,
         address: { $ne: address },
       })
       if (previousToken) {
         await TokenModel.deleteMany({ token: previousToken })
       }
-      const existingToken = await TokenModel.find({ token, address })
+      const existingToken = await TokenModel.findOne({ token, address })
       if (!existingToken) {
         await TokenModel.create({ token, address })
       }
@@ -35,7 +35,8 @@ export default class TokenController {
 
   @Delete('/')
   async deleteToken(
-    @Body({ required: true }) { token, message, signature }: Signature & Token,
+    @Query({ required: true })
+    { token, message, signature }: Signature & Token,
     @Ctx() ctx: Context
   ) {
     try {
