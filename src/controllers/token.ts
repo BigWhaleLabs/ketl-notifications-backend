@@ -2,7 +2,7 @@ import { Body, Controller, Ctx, Delete, Post, Query } from 'amala'
 import { Context } from 'koa'
 import { TokenModel } from '@/models/Token'
 import { badRequest } from '@hapi/boom'
-import { verifyMessage } from 'ethers'
+import { utils } from 'ethers'
 import Signature from '@/validators/Signature'
 import Token from '@/validators/Token'
 
@@ -14,7 +14,7 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      const address = verifyMessage(message, signature)
+      const address = utils.verifyMessage(message, signature)
       const previousToken = await TokenModel.findOne({
         token,
         address: { $ne: address },
@@ -40,7 +40,7 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      const address = verifyMessage(message, signature)
+      const address = utils.verifyMessage(message, signature)
       await TokenModel.deleteMany({ token, address })
       return { success: true }
     } catch {
