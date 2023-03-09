@@ -9,4 +9,7 @@ dotenv.config({ path: resolve(cwd(), '.env') })
 export default cleanEnv(process.env, {
   PORT: num({ default: 1337 }),
   MONGO: str(),
+  APN_KEY_ID: str(),
+  APN_TEAM_ID: str(),
+  BUNDLE_ID: str(),
 })
