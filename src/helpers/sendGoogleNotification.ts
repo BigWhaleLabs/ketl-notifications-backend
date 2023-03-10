@@ -8,8 +8,7 @@ export default function (token: string) {
     token,
     {
       data: {
-        body: 'This is a test Kekl notification',
-        title: 'Kekl Notification',
+        body: 'FCM Message Body',
       },
     },
     {

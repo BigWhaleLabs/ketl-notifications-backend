@@ -2,30 +2,23 @@ import { Body, Controller, Ctx, Delete, Post, Query } from 'amala'
 import { Context } from 'koa'
 import { TokenModel } from '@/models/Token'
 import { badRequest } from '@hapi/boom'
-import { utils } from 'ethers'
-import Signature from '@/validators/Signature'
 import Token from '@/validators/Token'
 
 @Controller('/token')
 export default class TokenController {
   @Post('/')
   async addToken(
-    @Body({ required: true }) { token, message, signature }: Signature & Token,
+    @Body({ required: true }) { token }: Token,
     @Ctx() ctx: Context
   ) {
     try {
-      const address = utils.verifyMessage(message, signature)
       const previousToken = await TokenModel.findOne({
         token,
-        address: { $ne: address },
       })
-      if (previousToken) {
-        await TokenModel.deleteMany({ token: previousToken })
-      }
-      const existingToken = await TokenModel.findOne({ token, address })
-      if (!existingToken) {
-        await TokenModel.create({ token, address })
-      }
+      if (previousToken) return { success: true }
+
+      await TokenModel.create({ token })
+
       return { success: true }
     } catch (e) {
       console.error(e)
@@ -36,12 +29,11 @@ export default class TokenController {
   @Delete('/')
   async deleteToken(
     @Query({ required: true })
-    { token, message, signature }: Signature & Token,
+    { token }: Token,
     @Ctx() ctx: Context
   ) {
     try {
-      const address = utils.verifyMessage(message, signature)
-      await TokenModel.deleteMany({ token, address })
+      await TokenModel.deleteMany({ token })
       return { success: true }
     } catch {
       return ctx.throw(badRequest('Invalid signature'))
