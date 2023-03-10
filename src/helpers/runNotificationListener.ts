@@ -1,27 +1,31 @@
+import { BigNumber } from 'ethers'
+import { TokenModel } from '@/models/Token'
+import CID from '@/models/CID'
 import getObssContract from '@/helpers/getObssContract'
 import sendAppleNotification from '@/helpers/sendAppleNotification'
+import sendGoogleNotification from '@/helpers/sendGoogleNotification'
+
+const apnRegex = /^[a-f0-9]{64}$/
+const fcmRegex = /^[a-zA-Z0-9_-]{140,152}$/
 
 const obssContract = getObssContract()
-console.log('listen')
-obssContract.on('ReactionAdded', () => {
-  console.log('reactionAdded')
-  void sendAppleNotification(
-    'd80b5390a9d65768a11c0fbbb2caee25663f4e47d020395bb41f5642b7fb3eac',
-    'ReactionAdded'
-  )
-})
-obssContract.on('ReactionRemoved', () => {
-  console.log('reactionRemoved')
-  void sendAppleNotification(
-    'd80b5390a9d65768a11c0fbbb2caee25663f4e47d020395bb41f5642b7fb3eac',
-    'ReactionRemoved'
-  )
-})
 
-obssContract.on('FeedPostAdded', () => {
-  console.log('new feed post')
-  void sendAppleNotification(
-    'd80b5390a9d65768a11c0fbbb2caee25663f4e47d020395bb41f5642b7fb3eac',
-    'FeedPostAdded'
-  )
+obssContract.on('FeedPostAdded', async () => {
+  console.log('got event')
+  const allTokens = await TokenModel.find()
+  allTokens.forEach(async (token) => {
+    try {
+      const { token: deviceToken } = token
+      console.log(apnRegex.test(deviceToken))
+      // APN token
+      if (apnRegex.test(deviceToken)) {
+        await sendAppleNotification(deviceToken)
+      } else if (fcmRegex.test(deviceToken)) {
+        // FCM token
+        await sendGoogleNotification(deviceToken)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  })
 })
