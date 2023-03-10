@@ -6,8 +6,6 @@ import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
 import { resolve } from 'path'
 import env from '@/helpers/env'
-import firebaseMessaging from '@/helpers/firebaseMessaging'
-console.log(firebaseMessaging)
 const app = new Koa()
 
 export default async function () {
