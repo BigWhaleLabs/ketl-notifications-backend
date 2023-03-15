@@ -6,7 +6,6 @@ import sendGoogleNotification from '@/helpers/sendGoogleNotification'
 const apnRegex = /^[a-f0-9]{64}$/
 
 const rootFeeds = {
-  0: 't/dev',
   1: 't/startups',
   2: 't/ketlTeam',
 } as { [key: number]: string }
