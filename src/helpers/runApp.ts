@@ -6,7 +6,6 @@ import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
 import { resolve } from 'path'
 import env from '@/helpers/env'
-
 const app = new Koa()
 
 export default async function () {

@@ -4,8 +4,6 @@ import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
   schemaOptions: { timestamps: true },
 })
 export class Token {
-  @prop({ index: true, lowercase: true })
-  address!: string
   @prop({ index: true })
   token!: string
 }

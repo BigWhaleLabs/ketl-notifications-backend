@@ -1,6 +1,7 @@
 import 'module-alias/register'
 import 'source-map-support/register'
 
+import '@/helpers/runNotificationListener'
 import runApp from '@/helpers/runApp'
 import runMongo from '@/helpers/mongo'
 

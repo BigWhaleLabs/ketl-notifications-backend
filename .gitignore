@@ -11,3 +11,6 @@ dist
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+firebase-account.json
+APN.p8
