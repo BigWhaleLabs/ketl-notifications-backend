@@ -1,18 +1,25 @@
-import { getMessaging } from 'firebase-admin/messaging'
+import { MessagingPayload, getMessaging } from 'firebase-admin/messaging'
 import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-export default function (token: string) {
-  return messaging.sendToDevice(
-    token,
-    {
-      data: {
-        body: 'FCM Message Body',
-      },
+function createNotification(title?: string) {
+  const baseNotification = {
+    data: {
+      type: 'newPost',
     },
-    {
-      priority: 'high',
+  } as MessagingPayload
+  if (title) {
+    baseNotification.notification = {
+      title,
+      sound: 'default',
     }
-  )
+  }
+  return baseNotification
+}
+
+export default function (token: string, title?: string) {
+  return messaging.sendToDevice(token, createNotification(title), {
+    priority: 'high',
+  })
 }
