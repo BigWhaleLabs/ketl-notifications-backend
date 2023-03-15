@@ -1,11 +1,9 @@
 import { TokenModel } from '@/models/Token'
-import getObssContract from '@/helpers/getObssContract'
+import obssContract from '@/helpers/getObssContract'
 import sendAppleNotification from '@/helpers/sendAppleNotification'
 import sendGoogleNotification from '@/helpers/sendGoogleNotification'
 
 const apnRegex = /^[a-f0-9]{64}$/
-
-const obssContract = getObssContract()
 
 const rootFeeds = {
   0: 't/dev',
@@ -18,15 +16,14 @@ obssContract.on('FeedPostAdded', async (feedId) => {
     ? `Someone posted at ${rootFeeds[feedId.toNumber()]}`
     : undefined
   const allTokens = await TokenModel.find()
-  allTokens.forEach(async (token) => {
+  allTokens.forEach(async ({ token }) => {
     try {
-      const { token: deviceToken } = token
       // APN token
-      if (apnRegex.test(deviceToken)) {
-        await sendAppleNotification(deviceToken, title)
+      if (apnRegex.test(token)) {
+        await sendAppleNotification(token, title)
       } else {
         // FCM token
-        await sendGoogleNotification(deviceToken, title)
+        await sendGoogleNotification(token, title)
       }
     } catch (err) {
       console.error(err)

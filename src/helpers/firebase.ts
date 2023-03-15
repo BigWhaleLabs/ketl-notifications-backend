@@ -6,8 +6,6 @@ import { resolve } from 'path'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceAccount = require(resolve(cwd(), 'firebase-account.json'))
 
-const app = initializeApp({
+export default initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
-
-export default app
