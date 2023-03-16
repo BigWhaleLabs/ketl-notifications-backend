@@ -23,20 +23,22 @@ obssContract.on(
   ) => {
     const { text } = await getPostByStruct(metadata)
     const nickname = generateRandomName(author)
-    const title = rootFeeds[feedId.toNumber()]
+    const feed = feedId.toNumber()
+
+    const title = rootFeeds[feed]
       ? `@${nickname} posted at ${rootFeeds[feedId.toNumber()]}`
       : undefined
+
     const allTokens = await TokenModel.find()
+
     allTokens.forEach(async ({ token }) => {
       try {
         // APN token
         if (apnRegex.test(token)) {
           await sendAppleNotification(token, title, text)
-          console.log(text)
         } else {
           // FCM token
           await sendGoogleNotification(token, title, text)
-          console.log('FCM token: ', token)
         }
       } catch (err) {
         console.error(err)

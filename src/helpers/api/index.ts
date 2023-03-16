@@ -5,8 +5,6 @@ import fetchWithTimeout from '@/helpers/fetchWithTimeout'
 import structToCid from '@/helpers/structToCid'
 import validatePost from '@/helpers/api/validatePost'
 
-const cidToData = new Map<CID, unknown>([])
-
 const { IPFS_GATEWAY } = env
 
 const headers = {
@@ -23,8 +21,6 @@ export async function getMetadataFromIpfs<ResponseData>(metadata: CID) {
 
   const data = (await response.json()) as ResponseData
 
-  cidToData.set(metadata, data)
-
   return data
 }
 
@@ -36,7 +32,5 @@ export async function getPostByStruct(metadata: CID) {
       `Invalid post metadata: ${metadata} postData: ${JSON.stringify(postData)}`
     )
 
-  const { text } = postData
-
-  return { text }
+  return { text: postData.text }
 }

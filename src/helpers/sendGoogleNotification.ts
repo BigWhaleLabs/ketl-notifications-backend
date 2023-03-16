@@ -11,12 +11,11 @@ function createNotification(title?: string, body?: string) {
   } as MessagingPayload
   if (title) {
     baseNotification.notification = {
-      title: title,
-      body: body,
+      title,
+      body,
       sound: 'default',
     }
   }
-  console.log('baseNotification: ', baseNotification)
   return baseNotification
 }
 
