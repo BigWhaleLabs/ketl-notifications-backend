@@ -11,13 +11,14 @@ function createNotification(
   notification.contentAvailable = true
   notification.priority = 5
   notification.pushType = 'background'
-
-  notification.priority = 10
-  notification.aps.alert = {
-    title: notificationTitle,
-    body: notificationBody,
+  if (notificationTitle || notificationBody) {
+    notification.priority = 10
+    notification.aps.alert = {
+      title: notificationTitle,
+      body: notificationBody,
+    }
+    notification.pushType = 'alert'
   }
-  notification.pushType = 'alert'
 
   return notification
 }
