@@ -3,7 +3,7 @@ import CID from '@/models/CID'
 import env from '@/helpers/env'
 import fetchWithTimeout from '@/helpers/fetchWithTimeout'
 import structToCid from '@/helpers/structToCid'
-import validatePost from '@/helpers/api/validatePost'
+import validatePost from '@/helpers/validatePost'
 
 const { IPFS_GATEWAY } = env
 

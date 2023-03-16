@@ -6,8 +6,6 @@ const checkStringData = (data?: string) => {
 
 export default function (item: PostTexts): item is PostTexts {
   const validText = 'text' in item && checkStringData(item.text)
-  const validExtraText =
-    'extraText' in item ? typeof item.extraText === 'string' : true
 
-  return validText && validExtraText
+  return validText
 }
