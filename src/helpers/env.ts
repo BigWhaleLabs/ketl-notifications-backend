@@ -22,4 +22,5 @@ export default cleanEnv(process.env, {
   }),
   ETH_RPC: str({ default: BWL_ETH_RPC }),
   ETH_NETWORK: str({ default: ETH_MUMBAI_NETWORK }),
+  IPFS_GATEWAY: str({ default: 'https://ipfs.sealcred.xyz/ipfs' }),
 })

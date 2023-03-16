@@ -2,7 +2,10 @@ import { Notification } from '@parse/node-apn'
 import apn from '@/helpers/apn'
 import env from '@/helpers/env'
 
-function createNotification(notificationTitle?: string) {
+function createNotification(
+  notificationTitle?: string,
+  notificationBody?: string
+) {
   const notification = new Notification()
   notification.topic = env.BUNDLE_ID
   notification.contentAvailable = true
@@ -10,15 +13,26 @@ function createNotification(notificationTitle?: string) {
   notification.pushType = 'background'
   if (notificationTitle) {
     notification.priority = 10
-    notification.aps.alert = notificationTitle
+    notification.aps.alert = {
+      title: notificationTitle,
+      body: notificationBody,
+    }
     notification.pushType = 'alert'
   }
+
   return notification
 }
 
-export default async function (token: string, notificationTitle?: string) {
+export default async function (
+  token: string,
+  notificationTitle?: string,
+  notificationBody?: string
+) {
   try {
-    const result = await apn.send(createNotification(notificationTitle), token)
+    const result = await apn.send(
+      createNotification(notificationTitle, notificationBody),
+      token
+    )
     if (result.failed.length) {
       throw new Error(
         'Failed to send notification through APN, response was: ' +

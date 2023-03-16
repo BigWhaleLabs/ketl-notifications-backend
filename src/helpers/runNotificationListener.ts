@@ -1,4 +1,8 @@
+import { BigNumber } from 'ethers'
 import { TokenModel } from '@/models/Token'
+import { getPostByStruct } from '@/helpers/api'
+import CID from '@/models/CID'
+import generateRandomName from '@/helpers/generateRandomName'
 import obssContract from '@/helpers/getObssContract'
 import sendAppleNotification from '@/helpers/sendAppleNotification'
 import sendGoogleNotification from '@/helpers/sendGoogleNotification'
@@ -10,22 +14,33 @@ const rootFeeds = {
   2: 't/ketlTeam',
 } as { [key: number]: string }
 
-obssContract.on('FeedPostAdded', async (feedId) => {
-  const title = rootFeeds[feedId.toNumber()]
-    ? `Someone posted at ${rootFeeds[feedId.toNumber()]}`
-    : undefined
-  const allTokens = await TokenModel.find()
-  allTokens.forEach(async ({ token }) => {
-    try {
-      // APN token
-      if (apnRegex.test(token)) {
-        await sendAppleNotification(token, title)
-      } else {
-        // FCM token
-        await sendGoogleNotification(token, title)
+obssContract.on(
+  'FeedPostAdded',
+  async (
+    feedId,
+    postId,
+    [author, metadata]: [author: string, metadata: CID]
+  ) => {
+    const { text } = await getPostByStruct(metadata)
+    const nickname = generateRandomName(author)
+    const title = rootFeeds[feedId.toNumber()]
+      ? `@${nickname} posted at ${rootFeeds[feedId.toNumber()]}`
+      : undefined
+    const allTokens = await TokenModel.find()
+    allTokens.forEach(async ({ token }) => {
+      try {
+        // APN token
+        if (apnRegex.test(token)) {
+          await sendAppleNotification(token, title, text)
+          console.log(text)
+        } else {
+          // FCM token
+          await sendGoogleNotification(token, title, text)
+          console.log('FCM token: ', token)
+        }
+      } catch (err) {
+        console.error(err)
       }
-    } catch (err) {
-      console.error(err)
-    }
-  })
-})
+    })
+  }
+)

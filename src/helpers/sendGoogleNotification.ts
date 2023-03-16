@@ -3,7 +3,7 @@ import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-function createNotification(title?: string) {
+function createNotification(title?: string, body?: string) {
   const baseNotification = {
     data: {
       type: 'newPost',
@@ -11,15 +11,17 @@ function createNotification(title?: string) {
   } as MessagingPayload
   if (title) {
     baseNotification.notification = {
-      title,
+      title: title,
+      body: body,
       sound: 'default',
     }
   }
+  console.log('baseNotification: ', baseNotification)
   return baseNotification
 }
 
-export default function (token: string, title?: string) {
-  return messaging.sendToDevice(token, createNotification(title), {
+export default function (token: string, title?: string, body?: string) {
+  return messaging.sendToDevice(token, createNotification(title, body), {
     priority: 'high',
   })
 }
