@@ -11,7 +11,7 @@ function createNotification(
   notification.contentAvailable = true
   notification.priority = 5
   notification.pushType = 'background'
-  if (notificationTitle || notificationBody) {
+  if (notificationTitle) {
     notification.priority = 10
     notification.aps.alert = {
       title: notificationTitle,

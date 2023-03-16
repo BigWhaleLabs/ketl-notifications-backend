@@ -2,6 +2,7 @@ import { BigNumber } from 'ethers'
 import { TokenModel } from '@/models/Token'
 import { getPostByStruct } from '@/helpers/api'
 import CID from '@/models/CID'
+import env from '@/helpers/env'
 import generateRandomName from '@/helpers/generateRandomName'
 import obssContract from '@/helpers/getObssContract'
 import sendAppleNotification from '@/helpers/sendAppleNotification'
@@ -9,10 +10,16 @@ import sendGoogleNotification from '@/helpers/sendGoogleNotification'
 
 const apnRegex = /^[a-f0-9]{64}$/
 
-const rootFeeds = {
-  1: 't/startups',
-  2: 't/ketlTeam',
-} as { [key: number]: string }
+const rootFeeds: { [key: number]: string } = env.isProduction
+  ? {
+      1: 't/startups',
+      2: 't/ketlTeam',
+    }
+  : {
+      0: 't/devFeed',
+      1: 't/startups',
+      2: 't/ketlTeam',
+    }
 
 obssContract.on(
   'FeedPostAdded',
@@ -26,7 +33,7 @@ obssContract.on(
     const numberFeedId = feedId.toNumber()
 
     const title = rootFeeds[numberFeedId]
-      ? `@${nickname} posted at ${rootFeeds[numberFeedId]}`
+      ? `@${nickname} posted to ${rootFeeds[numberFeedId]}`
       : undefined
 
     const allTokens = await TokenModel.find()

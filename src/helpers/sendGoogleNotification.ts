@@ -9,7 +9,7 @@ function createNotification(title?: string, body?: string) {
       type: 'newPost',
     },
   } as MessagingPayload
-  if (title || body) {
+  if (title) {
     baseNotification.notification = {
       title,
       body,
