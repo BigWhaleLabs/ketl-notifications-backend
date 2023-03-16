@@ -23,10 +23,10 @@ obssContract.on(
   ) => {
     const { text } = await getPostByStruct(metadata)
     const nickname = generateRandomName(author)
-    const feed = feedId.toNumber()
+    const numberFeedId = feedId.toNumber()
 
-    const title = rootFeeds[feed]
-      ? `@${nickname} posted at ${rootFeeds[feedId.toNumber()]}`
+    const title = rootFeeds[numberFeedId]
+      ? `@${nickname} posted at ${rootFeeds[numberFeedId]}`
       : undefined
 
     const allTokens = await TokenModel.find()
