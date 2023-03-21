@@ -16,6 +16,7 @@ obssContract.on('FeedPostAdded', async (feedId) => {
   const title = rootFeeds[feedId.toNumber()]
     ? `Someone posted at ${rootFeeds[feedId.toNumber()]}`
     : undefined
+
   const allTokens = await TokenModel.find()
 
   for (const tokenDoc of allTokens) {
@@ -23,6 +24,7 @@ obssContract.on('FeedPostAdded', async (feedId) => {
       const { token, lastSentTime } = tokenDoc
 
       if (
+        title ||
         !lastSentTime ||
         currentTime.getTime() - lastSentTime.getTime() >= notificationInterval
       ) {
