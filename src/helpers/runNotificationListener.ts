@@ -11,6 +11,8 @@ const rootFeeds = {
   2: 't/ketlTeam',
 } as { [key: number]: string }
 
+const rateLimitTracker = new Map<string, Date>()
+
 obssContract.on('FeedPostAdded', async (feedId) => {
   const currentTime = new Date()
   const title = rootFeeds[feedId.toNumber()]
@@ -21,8 +23,10 @@ obssContract.on('FeedPostAdded', async (feedId) => {
 
   for (const tokenDoc of allTokens) {
     try {
-      const { token, lastSentTime } = tokenDoc
+      const { token } = tokenDoc
 
+      // Check rate limit for the token
+      const lastSentTime = rateLimitTracker.get(token)
       if (
         title ||
         !lastSentTime ||
@@ -36,9 +40,8 @@ obssContract.on('FeedPostAdded', async (feedId) => {
           await sendGoogleNotification(token, title)
         }
 
-        // Update lastSentTime in the database
-        tokenDoc.lastSentTime = currentTime
-        await tokenDoc.save()
+        // Update rate limit tracker
+        rateLimitTracker.set(token, currentTime)
       }
     } catch (err) {
       console.error(err)
