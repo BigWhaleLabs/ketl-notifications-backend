@@ -4,7 +4,7 @@ import sendAppleNotification from '@/helpers/sendAppleNotification'
 import sendGoogleNotification from '@/helpers/sendGoogleNotification'
 
 const apnRegex = /^[a-f0-9]{64}$/
-const notificationInterval = 30 * 60 * 1000 // 30 minutes in milliseconds
+const notificationInterval = 30 * 60 * 1000
 
 const rootFeeds = {
   1: 't/startups',
