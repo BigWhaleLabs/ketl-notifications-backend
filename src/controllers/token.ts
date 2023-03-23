@@ -1,27 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { BigNumber, utils } from 'ethers'
 import { Body, Controller, Ctx, Delete, Get, Post, Query } from 'amala'
-import { Config, uniqueNamesGenerator } from 'unique-names-generator'
 import { Context } from 'koa'
-import { OBSSStorage } from '@big-whale-labs/obss-storage-contract'
-import { OBSSStorage__factory } from '@big-whale-labs/obss-storage-contract'
 import { TokenModel } from '@/models/Token'
-import {
-  TypedEvent,
-  TypedEventFilter,
-} from '@big-whale-labs/obss-storage-contract/dist/typechain/common'
-import { animalDictionary, colorDictionary } from '@/helpers/nameDictionary'
 import { badRequest } from '@hapi/boom'
-import { encode } from 'bs58'
-import CID from '@/models/CID'
 import Token from '@/validators/Token'
 import defaultProvider from '@/helpers/defaultProvider'
-import generateRandomName from '@/helpers/generateRandomName'
 import getEvents from '@/helpers/getEventst'
 import obssContract from '@/helpers/getObssContract'
-import parsePostLogData from '@/helpers/parsePostLogData'
 import proccessBlocksForNotifications from '@/helpers/proccessBlocksForNotifications'
-import structToCid from '@/helpers/structToCid'
 
 @Controller('/token')
 export default class TokenController {
@@ -30,7 +15,6 @@ export default class TokenController {
     const currentBlock = await defaultProvider.getBlockNumber()
     const postsSinceLastCheck = await getEvents(
       obssContract.filters.FeedPostAdded(),
-      // lastParsedBlock,
       currentBlockNumber || currentBlock,
       currentBlock
     )
