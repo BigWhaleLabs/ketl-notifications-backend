@@ -16,7 +16,7 @@ export default function (posts: FeedPostAddedEvent[]) {
         [
           author,
           structToCid(metadata),
-          commentFeedId,
+          commentFeedId.toString(),
           generateRandomName(author),
         ],
       ]
