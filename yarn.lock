@@ -1605,15 +1605,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@notifee/react-native@npm:^7.6.1":
-  version: 7.6.1
-  resolution: "@notifee/react-native@npm:7.6.1"
-  peerDependencies:
-    react-native: "*"
-  checksum: 9b3eb25ea41a48d02ff643f7f46f4d8c04d20e17ba960f412fc94a026402d57e07ed7d81f4b4e4427f11c5d3418ad584c1a15bf9ae28e549667706825d74db3c
-  languageName: node
-  linkType: hard
-
 "@npmcli/fs@npm:^2.1.0":
   version: 2.1.2
   resolution: "@npmcli/fs@npm:2.1.2"
@@ -1716,18 +1707,6 @@ __metadata:
   version: 1.1.0
   resolution: "@protobufjs/utf8@npm:1.1.0"
   checksum: f9bf3163d13aaa3b6f5e6fbf37a116e094ea021c0e1f2a7ccd0e12a29e2ce08dafba4e8b36e13f8ed7397e1591610ce880ed1289af4d66cf4ace8a36a9557278
-  languageName: node
-  linkType: hard
-
-"@react-native-community/push-notification-ios@npm:^1.10.1":
-  version: 1.10.1
-  resolution: "@react-native-community/push-notification-ios@npm:1.10.1"
-  dependencies:
-    invariant: ^2.2.4
-  peerDependencies:
-    react: ">=16.6.3"
-    react-native: ">=0.58.4"
-  checksum: 64de91355791618f770057a903e3004b76d0f627e8db1477add81091db7e9675ef8d9a0fea6f20b7d166701a8b193f4e87396ae95c6778f42ca7bf3055d3e901
   languageName: node
   linkType: hard
 
@@ -4609,15 +4588,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "invariant@npm:2.2.4"
-  dependencies:
-    loose-envify: ^1.0.0
-  checksum: cc3182d793aad82a8d1f0af697b462939cb46066ec48bbf1707c150ad5fad6406137e91a262022c269702e01621f35ef60269f6c0d7fd178487959809acdfb14
-  languageName: node
-  linkType: hard
-
 "ip@npm:^2.0.0":
   version: 2.0.0
   resolution: "ip@npm:2.0.0"
@@ -4914,13 +4884,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-tokens@npm:^3.0.0 || ^4.0.0":
-  version: 4.0.0
-  resolution: "js-tokens@npm:4.0.0"
-  checksum: 8a95213a5a77deb6cbe94d86340e8d9ace2b93bc367790b260101d2f36a2eaf4e4e22d9fa9cf459b38af3a32fb4190e638024cf82ec95ef708680e405ea7cc78
-  languageName: node
-  linkType: hard
-
 "js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0"
@@ -5101,9 +5064,7 @@ __metadata:
     "@big-whale-labs/obss-storage-contract": ^0.1.3
     "@hapi/boom": ^10.0.1
     "@koa/cors": ^4.0.0
-    "@notifee/react-native": ^7.6.1
     "@parse/node-apn": ^5.1.3
-    "@react-native-community/push-notification-ios": ^1.10.1
     "@typegoose/typegoose": ^10.1.1
     "@types/koa": ^2.13.5
     "@types/koa-bodyparser": ^4.3.10
@@ -5450,17 +5411,6 @@ __metadata:
   version: 5.2.1
   resolution: "long@npm:5.2.1"
   checksum: 9264da12d1b7df67e5aa6da4498144293caf1ad12e7f092efe4e9a2d32c53f0bbf7334f7cef997080a2a3af061142558ab366efa71698d98b1cdb883477445a7
-  languageName: node
-  linkType: hard
-
-"loose-envify@npm:^1.0.0":
-  version: 1.4.0
-  resolution: "loose-envify@npm:1.4.0"
-  dependencies:
-    js-tokens: ^3.0.0 || ^4.0.0
-  bin:
-    loose-envify: cli.js
-  checksum: 6517e24e0cad87ec9888f500c5b5947032cdfe6ef65e1c1936a0c48a524b81e65542c9c3edc91c97d5bddc806ee2a985dbc79be89215d613b1de5db6d1cfe6f4
   languageName: node
   linkType: hard
 
