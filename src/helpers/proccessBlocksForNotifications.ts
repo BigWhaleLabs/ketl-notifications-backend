@@ -6,19 +6,23 @@ import parsePostLogData from '@/helpers/parsePostLogData'
 import structToCid from '@/helpers/structToCid'
 
 export default function (posts: FeedPostAddedEvent[]) {
-  return posts
-    .map(({ data, topics }) => parsePostLogData({ data, topics }))
-    .map(({ args }) => args as [BigNumber, BigNumber, [string, CID, BigNumber]])
-    .map(([idFeed, postId, [author, metadata, commentFeedId]]) => {
-      return [
-        idFeed.toString(),
-        postId.toString(),
-        [
-          author,
-          structToCid(metadata),
-          commentFeedId.toString(),
-          generateRandomName(author),
-        ],
-      ]
-    })
+  return posts.map(({ data, topics }) => {
+    const { args } = parsePostLogData({ data, topics })
+    const [idFeed, postId, [author, metadata, commentFeedId]] = args as [
+      BigNumber,
+      BigNumber,
+      [string, CID, BigNumber]
+    ]
+
+    return [
+      idFeed.toString(),
+      postId.toString(),
+      [
+        author,
+        structToCid(metadata),
+        commentFeedId.toString(),
+        generateRandomName(author),
+      ],
+    ]
+  })
 }
