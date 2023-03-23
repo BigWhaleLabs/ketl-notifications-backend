@@ -1,11 +1,40 @@
-import { Body, Controller, Ctx, Delete, Post, Query } from 'amala'
+import { Body, Controller, Ctx, Delete, Get, Post, Query } from 'amala'
 import { Context } from 'koa'
 import { TokenModel } from '@/models/Token'
 import { badRequest } from '@hapi/boom'
 import Token from '@/validators/Token'
+import defaultProvider from '@/helpers/defaultProvider'
+import getEvents from '@/helpers/getEventst'
+import obssContract from '@/helpers/getObssContract'
+import proccessBlocksForNotifications from '@/helpers/proccessBlocksForNotifications'
 
 @Controller('/token')
 export default class TokenController {
+  @Get('/')
+  async getData(@Query('currentBlockNumber') currentBlockNumber?: number) {
+    const currentBlock = await defaultProvider.getBlockNumber()
+    const postsSinceLastCheck = await getEvents(
+      obssContract.filters.FeedPostAdded(),
+      currentBlockNumber || currentBlock,
+      currentBlock
+    )
+    const allTimePosts = await getEvents(
+      obssContract.filters.FeedPostAdded(),
+      undefined,
+      currentBlock
+    )
+    const modifiedPostsSinceLastCheck =
+      proccessBlocksForNotifications(postsSinceLastCheck)
+
+    const modifiedAllTimePosts = proccessBlocksForNotifications(allTimePosts)
+
+    return {
+      currentBlock,
+      postsSinceLastCheck: modifiedPostsSinceLastCheck,
+      allTimePosts: modifiedAllTimePosts,
+    }
+  }
+
   @Post('/')
   async addToken(
     @Body({ required: true }) { token }: Token,
