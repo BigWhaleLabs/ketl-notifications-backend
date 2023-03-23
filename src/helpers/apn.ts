@@ -11,5 +11,5 @@ export default new Provider({
     keyId: env.APN_KEY_ID,
     teamId: env.APN_TEAM_ID,
   },
-  production: env.isProduction,
+  production: false,
 })
