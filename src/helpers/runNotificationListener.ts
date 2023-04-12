@@ -1,8 +1,9 @@
+import { BigNumber } from 'ethers'
 import { TokenModel } from '@/models/Token'
 import env from '@/helpers/env'
 import obssContract from '@/helpers/getObssContract'
 import sendAppleNotification from '@/helpers/sendAppleNotification'
-import sendGoogleNotification from '@/helpers/sendGoogleNotification'
+import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
 const prodFeeds = {
   1: 't/startups',
@@ -18,24 +19,31 @@ const rootFeeds: { [key: number]: string } = env.isProduction
       ...prodFeeds,
     }
 
-obssContract.on('FeedPostAdded', async (feedId) => {
-  const title = rootFeeds[feedId.toNumber()]
-    ? `Someone posted at ${rootFeeds[feedId.toNumber()]}`
-    : undefined
+obssContract.on(
+  'FeedPostAdded',
+  async (feedId: BigNumber, postID: BigNumber) => {
+    const title = rootFeeds[feedId.toNumber()]
+      ? `Someone posted at ${rootFeeds[feedId.toNumber()]}`
+      : undefined
 
-  const allTokens = await TokenModel.find()
+    const allTokens = await TokenModel.find()
 
-  for (const { token } of allTokens) {
-    try {
-      // APN token
-      if (apnRegex.test(token)) {
-        await sendAppleNotification(token, title)
-      } else {
-        // FCM token
-        await sendGoogleNotification(token, title)
+    for (const { token } of allTokens) {
+      try {
+        // APN token
+        if (apnRegex.test(token)) {
+          await sendAppleNotification(token, title)
+        } else {
+          // FCM token
+          await sendFirebaseNotification(
+            token,
+            title,
+            title ? postID.toNumber() : undefined
+          )
+        }
+      } catch (err) {
+        console.error(err)
       }
-    } catch (err) {
-      console.error(err)
     }
   }
-})
+)
