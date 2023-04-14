@@ -21,7 +21,8 @@ const rootFeeds: { [key: number]: string } = env.isProduction
 
 obssContract.on(
   'FeedPostAdded',
-  async (feedId: BigNumber, postID: BigNumber) => {
+  async (feedId: BigNumber, postID: BigNumber, [, , commentsFeedId]) => {
+    console.log(feedId.toNumber(), postID.toNumber(), commentsFeedId.toNumber())
     const feed = rootFeeds[feedId.toNumber()]
     const title = feed && `Someone posted at ${feed}`
 
@@ -37,7 +38,7 @@ obssContract.on(
           await sendFirebaseNotification(
             token,
             title,
-            title ? postID.toNumber() : undefined
+            title ? commentsFeedId.toNumber() : undefined
           )
         }
       } catch (err) {
