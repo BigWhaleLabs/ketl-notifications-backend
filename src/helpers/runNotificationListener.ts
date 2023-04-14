@@ -22,9 +22,8 @@ const rootFeeds: { [key: number]: string } = env.isProduction
 obssContract.on(
   'FeedPostAdded',
   async (feedId: BigNumber, postID: BigNumber) => {
-    const title = rootFeeds[feedId.toNumber()]
-      ? `Someone posted at ${rootFeeds[feedId.toNumber()]}`
-      : undefined
+    const feed = rootFeeds[feedId.toNumber()]
+    const title = feed && `Someone posted at ${feed}`
 
     const allTokens = await TokenModel.find()
 
