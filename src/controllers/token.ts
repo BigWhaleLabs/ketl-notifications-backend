@@ -29,9 +29,9 @@ export default class TokenController {
     const modifiedAllTimePosts = proccessBlocksForNotifications(allTimePosts)
 
     return {
+      allTimePosts: modifiedAllTimePosts,
       currentBlock,
       postsSinceLastCheck: modifiedPostsSinceLastCheck,
-      allTimePosts: modifiedAllTimePosts,
     }
   }
 

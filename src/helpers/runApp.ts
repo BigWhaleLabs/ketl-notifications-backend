@@ -6,16 +6,17 @@ import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
 import { resolve } from 'path'
 import env from '@/helpers/env'
+
 const app = new Koa()
 
 export default async function () {
   const router = new Router()
   await bootstrapControllers({
     app,
-    router,
     basePath: '/',
     controllers: [resolve(__dirname, '../controllers/*')],
     disableVersioning: true,
+    router,
   })
   app.use(cors({ origin: '*' }))
   app.use(bodyParser())

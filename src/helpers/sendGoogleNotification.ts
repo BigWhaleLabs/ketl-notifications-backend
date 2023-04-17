@@ -11,8 +11,8 @@ function createNotification(title?: string) {
   } as MessagingPayload
   if (title) {
     baseNotification.notification = {
-      title,
       sound: 'default',
+      title,
     }
   }
   return baseNotification
