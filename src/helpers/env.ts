@@ -12,14 +12,14 @@ dotenv.config({ path: resolve(cwd(), '.env') })
 
 // eslint-disable-next-line node/no-process-env
 export default cleanEnv(process.env, {
-  PORT: num({ default: 1337 }),
-  MONGO: str(),
   APN_KEY_ID: str(),
   APN_TEAM_ID: str(),
   BUNDLE_ID: str(),
+  ETH_NETWORK: str({ default: ETH_MUMBAI_NETWORK }),
+  ETH_RPC: str({ default: BWL_ETH_RPC }),
+  MONGO: str(),
   OBSS_STORAGE_CONTRACT: str({
     default: PROD_KETL_OBSS_CONTRACT_ADDRESS,
   }),
-  ETH_RPC: str({ default: BWL_ETH_RPC }),
-  ETH_NETWORK: str({ default: ETH_MUMBAI_NETWORK }),
+  PORT: num({ default: 1337 }),
 })

@@ -5,9 +5,9 @@ export default function (address: string) {
   const customConfig: Config = {
     dictionaries: [animalDictionary, colorDictionary],
     length: 2,
-    style: 'capital',
-    separator: '',
     seed: address,
+    separator: '',
+    style: 'capital',
   }
   return uniqueNamesGenerator(customConfig)
 }

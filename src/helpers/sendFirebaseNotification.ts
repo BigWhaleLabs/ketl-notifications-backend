@@ -5,13 +5,13 @@ const messaging = getMessaging(firebase)
 
 export default function (token: string, title?: string, postId?: number) {
   const message = {
-    token,
     android: {
       priority: 'high',
     },
     data: {
       postId: postId ? String(postId) : undefined,
     },
+    token,
   } as Message
 
   if (title) {
@@ -20,15 +20,15 @@ export default function (token: string, title?: string, postId?: number) {
     }
   } else {
     message.apns = {
+      headers: {
+        'apns-priority': '5',
+        'apns-push-type': 'background',
+        'apns-topic': 'xyz.ketl',
+      },
       payload: {
         aps: {
           contentAvailable: true,
         },
-      },
-      headers: {
-        'apns-push-type': 'background',
-        'apns-priority': '5',
-        'apns-topic': 'xyz.ketl',
       },
     }
   }
