@@ -9,7 +9,7 @@ export default function (token: string, title?: string, postId?: number) {
       priority: 'high',
     },
     data: {
-      postId: postId ? String(postId) : undefined,
+      postId: postId ? String(postId) : '',
     },
     token,
   } as Message
