@@ -3,12 +3,17 @@ import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-export default function (
-  token: string,
-  title?: string,
-  body?: string,
+export default function ({
+  body,
+  postId,
+  title,
+  token,
+}: {
+  token: string
+  title?: string
+  body?: string
   postId?: number
-) {
+}) {
   const message = {
     android: {
       priority: 'high',

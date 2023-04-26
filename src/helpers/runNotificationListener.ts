@@ -32,7 +32,7 @@ obssContract.on(
   ) => {
     const feed = rootFeeds[feedId.toNumber()]
     const title = feed && `@${generateRandomName(author)} posted at ${feed}`
-    const message = feed && (await getIPFSContent(structToCid(metadata)))
+    const body = feed && (await getIPFSContent(structToCid(metadata)))
 
     const allTokens = await TokenModel.find()
 
@@ -43,12 +43,12 @@ obssContract.on(
           await sendAppleNotification(token, title)
         } else {
           // FCM token
-          await sendFirebaseNotification(
-            token,
+          await sendFirebaseNotification({
+            body,
+            postId: title ? commentsFeedId.toNumber() : undefined,
             title,
-            message,
-            title ? commentsFeedId.toNumber() : undefined
-          )
+            token,
+          })
         }
       } catch (err) {
         console.error(err)
