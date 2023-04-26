@@ -3,7 +3,17 @@ import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-export default function (token: string, title?: string, postId?: number) {
+export default function ({
+  body,
+  postId,
+  title,
+  token,
+}: {
+  token: string
+  title?: string
+  body?: string
+  postId?: number
+}) {
   const message = {
     android: {
       priority: 'high',
@@ -16,6 +26,7 @@ export default function (token: string, title?: string, postId?: number) {
 
   if (title) {
     message.notification = {
+      body,
       title,
     }
   } else {
