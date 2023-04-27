@@ -34,7 +34,7 @@ obssContract.on(
     const body = feed && (await getIPFSContent(structToCid(metadata)))
 
     const allTokens = await TokenModel.find()
-    const fcmTokens = allTokens.filter(({ token }) => apnRegex.test(token))
+    const fcmTokens = allTokens.filter(({ token }) => !apnRegex.test(token))
 
     for (const { token } of fcmTokens) {
       try {
