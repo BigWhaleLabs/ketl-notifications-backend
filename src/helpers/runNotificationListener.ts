@@ -5,7 +5,6 @@ import env from '@/helpers/env'
 import generateRandomName from '@/helpers/generateRandomName'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import obssContract from '@/helpers/getObssContract'
-import sendAppleNotification from '@/helpers/sendAppleNotification'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
@@ -35,21 +34,17 @@ obssContract.on(
     const body = feed && (await getIPFSContent(structToCid(metadata)))
 
     const allTokens = await TokenModel.find()
+    const fcmTokens = allTokens.filter(({ token }) => !apnRegex.test(token))
 
-    for (const { token } of allTokens) {
+    for (const { token } of fcmTokens) {
       try {
-        // APN token
-        if (apnRegex.test(token)) {
-          await sendAppleNotification(token, title)
-        } else {
-          // FCM token
-          await sendFirebaseNotification({
-            body,
-            postId: title ? commentsFeedId.toNumber() : undefined,
-            title,
-            token,
-          })
-        }
+        // FCM token
+        await sendFirebaseNotification({
+          body,
+          postId: title ? commentsFeedId.toNumber() : undefined,
+          title,
+          token,
+        })
       } catch (err) {
         console.error(err)
       }
