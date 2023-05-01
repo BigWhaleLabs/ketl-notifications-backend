@@ -1,36 +1,53 @@
-import { Message, getMessaging } from 'firebase-admin/messaging'
+import { MulticastMessage, getMessaging } from 'firebase-admin/messaging'
+import { chunk } from 'lodash'
 import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-export default function (token: string, title?: string, postId?: number) {
-  const message = {
-    android: {
-      priority: 'high',
-    },
-    data: {
-      postId: postId ? String(postId) : '',
-    },
-    token,
-  } as Message
+export default async function (
+  tokens: string[],
+  title?: string,
+  postId?: number
+) {
+  const tokenChunks = chunk(tokens, 499)
 
-  if (title) {
-    message.notification = {
-      title,
-    }
-  } else {
-    message.apns = {
-      headers: {
-        'apns-priority': '5',
-        'apns-push-type': 'background',
-        'apns-topic': 'xyz.ketl',
+  // Send multicast messages for each chunk
+  for (const chunk of tokenChunks) {
+    const message = {
+      android: {
+        priority: 'high',
       },
-      payload: {
-        aps: {
-          contentAvailable: true,
+      data: {
+        postId: postId ? String(postId) : '',
+      },
+      tokens: chunk,
+    } as MulticastMessage
+
+    if (title) {
+      message.notification = {
+        title,
+      }
+    } else {
+      message.apns = {
+        headers: {
+          'apns-priority': '5',
+          'apns-push-type': 'background',
+          'apns-topic': 'xyz.ketl',
         },
-      },
+        payload: {
+          aps: {
+            contentAvailable: true,
+          },
+        },
+      }
     }
+    const response = await messaging.sendMulticast(message)
+    response.responses.forEach((response) => {
+      if (response.success) return
+      if (!response.error) return
+      if (response.error.code === 'messaging/registration-token-not-registered')
+        return
+      console.error(response.error)
+    })
   }
-  return messaging.send(message)
 }

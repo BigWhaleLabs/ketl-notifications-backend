@@ -2,7 +2,6 @@ import { BigNumber } from 'ethers'
 import { TokenModel } from '@/models/Token'
 import env from '@/helpers/env'
 import obssContract from '@/helpers/getObssContract'
-import sendAppleNotification from '@/helpers/sendAppleNotification'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
 const prodFeeds = {
@@ -27,22 +26,20 @@ obssContract.on(
 
     const allTokens = await TokenModel.find()
 
-    for (const { token } of allTokens) {
-      try {
-        // APN token
-        if (apnRegex.test(token)) {
-          await sendAppleNotification(token, title)
-        } else {
-          // FCM token
-          await sendFirebaseNotification(
-            token,
-            title,
-            title ? commentsFeedId.toNumber() : undefined
-          )
-        }
-      } catch (err) {
-        console.error(err)
+    const fcmTokens = allTokens
+      .filter(({ token }) => !apnRegex.test(token))
+      .map(({ token }) => token)
+
+    try {
+      if (fcmTokens.length > 0) {
+        await sendFirebaseNotification(
+          fcmTokens,
+          title,
+          title ? commentsFeedId.toNumber() : undefined
+        )
       }
+    } catch (err) {
+      console.error(err)
     }
   }
 )
