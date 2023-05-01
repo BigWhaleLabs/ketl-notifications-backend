@@ -29,7 +29,6 @@ obssContract.on(
     postID: BigNumber,
     [author, metadata, commentsFeedId]: OBSSStorage.PostStructOutput
   ) => {
-    return
     const feed = rootFeeds[feedId.toNumber()]
     const title = feed && `@${generateRandomName(author)} posted at ${feed}`
     const body = feed && (await getIPFSContent(structToCid(metadata)))
