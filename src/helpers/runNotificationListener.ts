@@ -2,7 +2,6 @@ import { BigNumber } from 'ethers'
 import { TokenModel } from '@/models/Token'
 import env from '@/helpers/env'
 import obssContract from '@/helpers/getObssContract'
-import sendAppleNotification from '@/helpers/sendAppleNotification'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
 const prodFeeds = {
@@ -22,27 +21,27 @@ const rootFeeds: { [key: number]: string } = env.isProduction
 obssContract.on(
   'FeedPostAdded',
   async (feedId: BigNumber, postID: BigNumber, [, , commentsFeedId]) => {
+    // Do not send any notifications for now
+    return
     const feed = rootFeeds[feedId.toNumber()]
     const title = feed && `Someone posted at ${feed}`
 
     const allTokens = await TokenModel.find()
-
-    for (const { token } of allTokens) {
-      try {
-        // APN token
-        if (apnRegex.test(token)) {
-          await sendAppleNotification(token, title)
-        } else {
-          // FCM token
-          await sendFirebaseNotification(
-            token,
-            title,
-            title ? commentsFeedId.toNumber() : undefined
-          )
-        }
-      } catch (err) {
-        console.error(err)
+    const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
+      if (!apnRegex.test(token)) {
+        acc.push(token)
       }
+      return acc
+    }, [])
+
+    try {
+      await sendFirebaseNotification(
+        fcmTokens,
+        title,
+        title ? commentsFeedId.toNumber() : undefined
+      )
+    } catch (err) {
+      console.error(err)
     }
   }
 )
