@@ -33,13 +33,11 @@ obssContract.on(
     }, [])
 
     try {
-      if (fcmTokens.length > 0) {
-        await sendFirebaseNotification(
-          fcmTokens,
-          title,
-          title ? commentsFeedId.toNumber() : undefined
-        )
-      }
+      await sendFirebaseNotification(
+        fcmTokens,
+        title,
+        title ? commentsFeedId.toNumber() : undefined
+      )
     } catch (err) {
       console.error(err)
     }
