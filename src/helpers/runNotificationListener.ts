@@ -25,10 +25,12 @@ obssContract.on(
     const title = feed && `Someone posted at ${feed}`
 
     const allTokens = await TokenModel.find()
-
-    const fcmTokens = allTokens
-      .filter(({ token }) => !apnRegex.test(token))
-      .map(({ token }) => token)
+    const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
+      if (!apnRegex.test(token)) {
+        acc.push(token)
+      }
+      return acc
+    }, [])
 
     try {
       if (fcmTokens.length > 0) {
