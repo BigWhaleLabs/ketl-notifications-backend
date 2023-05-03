@@ -21,6 +21,8 @@ const rootFeeds: { [key: number]: string } = env.isProduction
 obssContract.on(
   'FeedPostAdded',
   async (feedId: BigNumber, postID: BigNumber, [, , commentsFeedId]) => {
+    // Do not send any notifications for now
+    return
     const feed = rootFeeds[feedId.toNumber()]
     const title = feed && `Someone posted at ${feed}`
 
