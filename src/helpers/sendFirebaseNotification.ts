@@ -4,11 +4,17 @@ import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-export default async function (
-  tokens: string[],
-  title?: string,
+export default async function ({
+  body,
+  postId,
+  title,
+  tokens,
+}: {
+  tokens: string[]
+  title?: string
+  body?: string
   postId?: number
-) {
+}) {
   const tokenChunks = chunk(tokens, 499)
 
   // Send multicast messages for each chunk
@@ -25,6 +31,7 @@ export default async function (
 
     if (title) {
       message.notification = {
+        body,
         title,
       }
     } else {
