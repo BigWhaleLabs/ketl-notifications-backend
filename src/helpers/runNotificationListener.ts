@@ -1,8 +1,12 @@
 import { BigNumber } from 'ethers'
+import { OBSSStorage } from '@big-whale-labs/obss-storage-contract'
 import { TokenModel } from '@/models/Token'
 import env from '@/helpers/env'
+import generateRandomName from '@/helpers/generateRandomName'
+import getIPFSContent from '@/helpers/getIPFSContent'
 import obssContract from '@/helpers/getObssContract'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
+import structToCid from '@/helpers/structToCid'
 
 const prodFeeds = {
   1: 't/startups',
@@ -20,9 +24,14 @@ const rootFeeds: { [key: number]: string } = env.isProduction
 
 obssContract.on(
   'FeedPostAdded',
-  async (feedId: BigNumber, postID: BigNumber, [, , commentsFeedId]) => {
+  async (
+    feedId: BigNumber,
+    postID: BigNumber,
+    [author, metadata, commentsFeedId]: OBSSStorage.PostStructOutput
+  ) => {
     const feed = rootFeeds[feedId.toNumber()]
-    const title = feed && `Someone posted at ${feed}`
+    const title = feed && `@${generateRandomName(author)} posted at ${feed}`
+    const body = feed && (await getIPFSContent(structToCid(metadata)))
 
     const allTokens = await TokenModel.find()
     const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
@@ -33,11 +42,12 @@ obssContract.on(
     }, [])
 
     try {
-      await sendFirebaseNotification(
-        fcmTokens,
+      await sendFirebaseNotification({
+        body,
+        postId: title ? commentsFeedId.toNumber() : undefined,
         title,
-        title ? commentsFeedId.toNumber() : undefined
-      )
+        tokens: fcmTokens,
+      })
     } catch (err) {
       console.error(err)
     }
