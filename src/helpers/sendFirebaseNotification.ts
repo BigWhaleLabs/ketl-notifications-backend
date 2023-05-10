@@ -50,7 +50,10 @@ export default async function ({
     }
     const response = await messaging.sendMulticast(message)
     response.responses.forEach((response) => {
-      if (response.success) return
+      if (response.success) {
+        console.log(response)
+        return
+      }
       if (!response.error) return
       if (response.error.code === 'messaging/registration-token-not-registered')
         return
