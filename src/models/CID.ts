@@ -1,4 +1,4 @@
-import { OBSSStorage } from '@big-whale-labs/obss-storage-contract'
+import { CIDStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 
-type CID = OBSSStorage.CIDStructOutput
+type CID = CIDStructOutput
 export default CID

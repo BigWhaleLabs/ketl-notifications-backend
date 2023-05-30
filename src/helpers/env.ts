@@ -22,5 +22,6 @@ export default cleanEnv(process.env, {
   OBSS_STORAGE_CONTRACT: str({
     default: PROD_KETL_OBSS_CONTRACT_ADDRESS,
   }),
+  OBSS_STORAGE_CONTRACT_FEEDS: str(),
   PORT: num({ default: 1337 }),
 })

@@ -2,36 +2,43 @@ import { Body, Controller, Ctx, Delete, Get, Post, Query } from 'amala'
 import { Context } from 'koa'
 import { TokenModel } from '@/models/Token'
 import { badRequest } from '@hapi/boom'
+import {
+  proccessCommentsForNotifications,
+  proccessPostsForNotifications,
+} from '@/helpers/proccessBlocksForNotifications'
 import Token from '@/validators/Token'
 import defaultProvider from '@/helpers/defaultProvider'
 import getEvents from '@/helpers/getEventst'
-import obssContract from '@/helpers/getObssContract'
-import proccessBlocksForNotifications from '@/helpers/proccessBlocksForNotifications'
+import getFeedsContract from '@/helpers/getFeedsContract'
 
 @Controller('/token')
 export default class TokenController {
   @Get('/')
   async getData(@Query('currentBlockNumber') currentBlockNumber?: number) {
+    console.log('currentBlockNumber', currentBlockNumber)
     const currentBlock = await defaultProvider.getBlockNumber()
+    const commentsSinceLastCheck = await getEvents(
+      getFeedsContract.filters.CommentAdded(),
+      currentBlockNumber ? currentBlockNumber + 1 : currentBlock,
+      currentBlock
+    )
     const postsSinceLastCheck = await getEvents(
-      obssContract.filters.FeedPostAdded(),
-      currentBlockNumber || currentBlock,
+      getFeedsContract.filters.PostAdded(),
+      currentBlockNumber ? currentBlockNumber + 1 : currentBlock,
       currentBlock
     )
-    const allTimePosts = await getEvents(
-      obssContract.filters.FeedPostAdded(),
-      undefined,
-      currentBlock
-    )
-    const modifiedPostsSinceLastCheck =
-      proccessBlocksForNotifications(postsSinceLastCheck)
 
-    const modifiedAllTimePosts = proccessBlocksForNotifications(allTimePosts)
+    const modifiedPostsSinceLastCheck =
+      proccessPostsForNotifications(postsSinceLastCheck)
+
+    const modifiedCommentSinceLastCheck = proccessCommentsForNotifications(
+      commentsSinceLastCheck
+    )
 
     return {
-      allTimePosts: modifiedAllTimePosts,
       currentBlock,
-      postsSinceLastCheck: modifiedPostsSinceLastCheck,
+      modifiedCommentSinceLastCheck,
+      modifiedPostsSinceLastCheck,
     }
   }
 
