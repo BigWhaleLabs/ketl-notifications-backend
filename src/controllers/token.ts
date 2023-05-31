@@ -15,7 +15,6 @@ import getFeedsContract from '@/helpers/getFeedsContract'
 export default class TokenController {
   @Get('/')
   async getData(@Query('currentBlockNumber') currentBlockNumber?: number) {
-    console.log('currentBlockNumber', currentBlockNumber)
     const currentBlock = await defaultProvider.getBlockNumber()
     const commentsSinceLastCheck = await getEvents(
       getFeedsContract.filters.CommentAdded(),

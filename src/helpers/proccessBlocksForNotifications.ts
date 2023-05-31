@@ -37,7 +37,6 @@ export function proccessPostsForNotifications(posts: PostAddedEvent[]) {
     const post = args[2]
     const [sender, metadata, timestamp, threadId, replyTo, numberOfComments] =
       post
-    console.log('sender', sender)
     return {
       feedId,
       metadata: structToCid(metadata),
