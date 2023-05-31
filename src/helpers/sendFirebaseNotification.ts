@@ -52,7 +52,6 @@ export default async function ({
     response.responses.forEach((response) => {
       if (response.success) {
         console.log(response)
-        console.log(tokens)
         return
       }
       if (!response.error) return
