@@ -3,7 +3,6 @@ import {
   TypedEventFilter,
 } from '@big-whale-labs/obss-storage-contract/dist/typechain/common'
 import getFeedsContract from '@/helpers/getFeedsContract'
-import obssContract from '@/helpers/getObssContract'
 
 const contractCreationBlock = 32269128
 

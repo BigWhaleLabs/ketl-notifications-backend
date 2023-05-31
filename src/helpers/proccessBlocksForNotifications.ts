@@ -1,11 +1,8 @@
-import { BigNumber } from 'ethers'
 import {
   CommentAddedEvent,
   PostAddedEvent,
 } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
-import CID from '@/models/CID'
 import generateRandomName from '@/helpers/generateRandomName'
-import parsePostLogData from '@/helpers/parsePostLogData'
 import structToCid from '@/helpers/structToCid'
 
 export function proccessCommentsForNotifications(

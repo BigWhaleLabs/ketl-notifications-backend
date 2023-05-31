@@ -1,12 +1,10 @@
 import { BigNumber } from 'ethers'
-import { OBSSStorage } from '@big-whale-labs/obss-storage-contract'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { TokenModel } from '@/models/Token'
 import env from '@/helpers/env'
 import generateRandomName from '@/helpers/generateRandomName'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
-import obssContract from '@/helpers/getObssContract'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
