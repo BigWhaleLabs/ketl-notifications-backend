@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@big-whale-labs/constants": "^0.1.74",
-    "@big-whale-labs/obss-storage-contract": "0.2.6-0",
+    "@big-whale-labs/obss-storage-contract": "^0.2.7-1",
     "@hapi/boom": "^10.0.1",
     "@koa/cors": "^4.0.0",
     "amala": "^8.0.2",
