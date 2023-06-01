@@ -6,6 +6,7 @@ const messaging = getMessaging(firebase)
 
 export default async function ({
   body,
+  feedId,
   postId,
   title,
   tokens,
@@ -14,6 +15,7 @@ export default async function ({
   title?: string
   body?: string
   postId?: number
+  feedId?: number
 }) {
   const tokenChunks = chunk(tokens, 499)
 
@@ -24,6 +26,7 @@ export default async function ({
         priority: 'high',
       },
       data: {
+        feedId: feedId ? String(feedId) : '',
         postId: postId ? String(postId) : '',
       },
       tokens: chunk,
