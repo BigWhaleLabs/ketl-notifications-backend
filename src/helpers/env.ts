@@ -18,6 +18,7 @@ export default cleanEnv(process.env, {
   ETH_NETWORK: str({ default: ETH_MUMBAI_NETWORK }),
   ETH_RPC: str({ default: BWL_ETH_RPC }),
   IPFS_GATEWAY: str({ default: 'https://ipfs.sealcred.xyz/ipfs' }),
+  KETL_ATTESTATION_CONTRACT: str(),
   MONGO: str(),
   OBSS_STORAGE_CONTRACT: str({
     default: PROD_KETL_OBSS_CONTRACT_ADDRESS,

@@ -5,6 +5,7 @@ import env from '@/helpers/env'
 import generateRandomName from '@/helpers/generateRandomName'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
+import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
@@ -21,6 +22,24 @@ const rootFeeds: { [key: number]: string } = env.isProduction
       0: 't/devFeed',
       ...prodFeeds,
     }
+
+ketlAttestationContract.on('EntanglementRegistered', async () => {
+  const allTokens = await TokenModel.find()
+  const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
+    if (!apnRegex.test(token)) {
+      acc.push(token)
+    }
+    return acc
+  }, [])
+  try {
+    await sendFirebaseNotification({
+      entanglement: true,
+      tokens: fcmTokens,
+    })
+  } catch (err) {
+    console.error(err)
+  }
+})
 
 getFeedsContract.on('CommentAdded', async () => {
   const allTokens = await TokenModel.find()
@@ -61,6 +80,7 @@ getFeedsContract.on(
     try {
       await sendFirebaseNotification({
         body,
+        feedId: feedId.toNumber(),
         postId: postId.toNumber(),
         title,
         tokens: fcmTokens,
