@@ -26,9 +26,7 @@ const rootFeeds: { [key: number]: string } = env.isProduction
 ketlAttestationContract.on('EntanglementRegistered', async () => {
   const allTokens = await TokenModel.find()
   const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
-    if (!apnRegex.test(token)) {
-      acc.push(token)
-    }
+    if (!apnRegex.test(token)) acc.push(token)
     return acc
   }, [])
   try {
@@ -44,9 +42,7 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
 getFeedsContract.on('CommentAdded', async () => {
   const allTokens = await TokenModel.find()
   const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
-    if (!apnRegex.test(token)) {
-      acc.push(token)
-    }
+    if (!apnRegex.test(token)) acc.push(token)
     return acc
   }, [])
   try {
@@ -72,9 +68,7 @@ getFeedsContract.on(
 
     const allTokens = await TokenModel.find()
     const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
-      if (!apnRegex.test(token)) {
-        acc.push(token)
-      }
+      if (!apnRegex.test(token)) acc.push(token)
       return acc
     }, [])
     try {
