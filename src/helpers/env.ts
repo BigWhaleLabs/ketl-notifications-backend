@@ -2,6 +2,8 @@ import * as dotenv from 'dotenv'
 import {
   ETH_RPC as BWL_ETH_RPC,
   ETH_MUMBAI_NETWORK,
+  PROD_KETL_ATTESTATION_CONTRACT,
+  PROD_KETL_FEEDS_CONTRACT_ADDRESS,
   PROD_KETL_OBSS_CONTRACT_ADDRESS,
 } from '@big-whale-labs/constants'
 import { cleanEnv, num, str } from 'envalid'
@@ -18,11 +20,15 @@ export default cleanEnv(process.env, {
   ETH_NETWORK: str({ default: ETH_MUMBAI_NETWORK }),
   ETH_RPC: str({ default: BWL_ETH_RPC }),
   IPFS_GATEWAY: str({ default: 'https://ipfs.sealcred.xyz/ipfs' }),
-  KETL_ATTESTATION_CONTRACT: str(),
+  KETL_ATTESTATION_CONTRACT: str({
+    default: PROD_KETL_ATTESTATION_CONTRACT,
+  }),
   MONGO: str(),
   OBSS_STORAGE_CONTRACT: str({
     default: PROD_KETL_OBSS_CONTRACT_ADDRESS,
   }),
-  OBSS_STORAGE_CONTRACT_FEEDS: str(),
+  OBSS_STORAGE_CONTRACT_FEEDS: str({
+    default: PROD_KETL_FEEDS_CONTRACT_ADDRESS,
+  }),
   PORT: num({ default: 1337 }),
 })

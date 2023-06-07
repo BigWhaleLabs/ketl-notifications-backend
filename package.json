@@ -15,8 +15,8 @@
     "lint": "yarn pretty && eslint --max-warnings 0 ./src/"
   },
   "dependencies": {
-    "@big-whale-labs/constants": "^0.1.74",
-    "@big-whale-labs/ketl-attestation-token": "^0.0.12",
+    "@big-whale-labs/constants": "^0.2.2",
+    "@big-whale-labs/ketl-attestation-token": "^0.0.14",
     "@big-whale-labs/obss-storage-contract": "^0.2.7-1",
     "@hapi/boom": "^10.0.1",
     "@koa/cors": "^4.0.0",

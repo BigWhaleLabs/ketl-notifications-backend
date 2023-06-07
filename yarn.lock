@@ -916,13 +916,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/constants@npm:^0.1.74":
-  version: 0.1.74
-  resolution: "@big-whale-labs/constants@npm:0.1.74"
-  checksum: 5eefc0f65452e2fcb7a85bbdab8b583d3270d4e10a0dff3279aefca4671dddfc73c9e7a0a64279db55f1e1f7433000df372038aef1d539717fdd469b4c1fdc64
-  languageName: node
-  linkType: hard
-
 "@big-whale-labs/constants@npm:^0.1.85":
   version: 0.1.85
   resolution: "@big-whale-labs/constants@npm:0.1.85"
@@ -930,10 +923,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/constants@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@big-whale-labs/constants@npm:0.2.0"
-  checksum: 9c5af51516c94274962d9ad9938745a2547457f0ec73f6c2bd93d253337fdeb2e9813e6aac7d1053fddc990b2cc032c65fbb141dfb451d8a8f15c6c1da299d7e
+"@big-whale-labs/constants@npm:^0.2.0, @big-whale-labs/constants@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@big-whale-labs/constants@npm:0.2.2"
+  checksum: faa2eb16e558b3f67b6eb92949749c2af2e377e0c5bcebcf3c0114e9d16c61d72b2d70a2b708c9bef8cdaed66b8d6cbce86c7e17025b5694f6c4423337f592a7
   languageName: node
   linkType: hard
 
@@ -964,9 +957,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/ketl-attestation-token@npm:^0.0.12":
-  version: 0.0.12
-  resolution: "@big-whale-labs/ketl-attestation-token@npm:0.0.12"
+"@big-whale-labs/ketl-attestation-token@npm:^0.0.14":
+  version: 0.0.14
+  resolution: "@big-whale-labs/ketl-attestation-token@npm:0.0.14"
   dependencies:
     "@big-whale-labs/constants": ^0.2.0
     "@big-whale-labs/ketl-allow-map-contract": ^0.0.3
@@ -974,7 +967,7 @@ __metadata:
     "@zk-kit/incremental-merkle-tree": ^1.1.0
     "@zk-kit/incremental-merkle-tree.sol": ^1.7.0
     prompt: ^1.3.0
-  checksum: e61ff1b9db71b935eaeb76f5383067c09e38aa3921869134791ac25f109c6a4b320e7f3aba98c7b73600a8a396cb85e9a1404d4bf6fa2cf4c6e3f086275d1fe0
+  checksum: 922c1a1b7f8cb7fad973610171e62a1ae9942d762fb59c7ba2580a58169f593501e33a7e71e6eb6eabd1eb58fde16a5c46cfed54b8d29436ec4fe7e7d0818e2e
   languageName: node
   linkType: hard
 
@@ -1769,15 +1762,15 @@ __metadata:
   linkType: hard
 
 "@openzeppelin/contracts-upgradeable@npm:^4.8.3":
-  version: 4.9.0
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.9.0"
-  checksum: c94eb8fc6761e17a245cee586eeaa74a098200f8508c56eda5ccbe1612fbe754f42f91ef1fea768f49295e1507dcb9cb72d33682949d84659ef63846cf83e26b
+  version: 4.9.1
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.9.1"
+  checksum: 4dff468b7de51701da8f46ca16e44831109e2602e80c96d68e3fba8ea1ae4ac498e60d38829e0d2d8494bb8cfc274adc7adc2dab566b929319dfe76a5c3af017
   languageName: node
   linkType: hard
 
 "@openzeppelin/hardhat-upgrades@npm:^1.26.0":
-  version: 1.26.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.26.0"
+  version: 1.27.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.27.0"
   dependencies:
     "@openzeppelin/upgrades-core": ^1.26.2
     chalk: ^4.1.0
@@ -1795,7 +1788,7 @@ __metadata:
       optional: true
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 0ed1ea54b02973fb5a8f54e4500c62f5713ada638e9dda943fa42ee3e336ebc20b954791d7d1540b1113edf5ed3e7491c4fb39e426c8e9b6589e413f29311b1f
+  checksum: 43005c560d3e1fd2943d0c0d5c5de5e9183ea8cc99710a0227d5906fdfb6a30872d857aa92424d7f05b0cf9b27b81e3669d6332ff34853b862f33437ed8b0748
   languageName: node
   linkType: hard
 
@@ -5627,8 +5620,8 @@ __metadata:
   resolution: "ketl-notifications-backend@workspace:."
   dependencies:
     "@big-whale-labs/bwl-eslint-backend": ^1.0.3
-    "@big-whale-labs/constants": ^0.1.74
-    "@big-whale-labs/ketl-attestation-token": ^0.0.12
+    "@big-whale-labs/constants": ^0.2.2
+    "@big-whale-labs/ketl-attestation-token": ^0.0.14
     "@big-whale-labs/obss-storage-contract": ^0.2.7-1
     "@big-whale-labs/prettier-config": ^1.1.3
     "@hapi/boom": ^10.0.1
@@ -8070,19 +8063,21 @@ __metadata:
 
 "typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: 2eee5c37cad4390385db5db5a8e81470e42e8f1401b0358d7390095d6f681b410f2c4a0c496c6ff9ebd775423c7785cdace7bcdad76c7bee283df3d9718c0f20
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^5.0.2#~builtin<compat/typescript>":
   version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=1f5320"
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: 6a1fe9a77bb9c5176ead919cc4a1499ee63e46b4e05bf667079f11bf3a8f7887f135aa72460a4c3b016e6e6bb65a822cb8689a6d86cbfe92d22cc9f501f09213
   languageName: node
   linkType: hard
 
