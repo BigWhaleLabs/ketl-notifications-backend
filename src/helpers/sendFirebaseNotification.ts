@@ -6,6 +6,8 @@ const messaging = getMessaging(firebase)
 
 export default async function ({
   body,
+  entanglement,
+  feedId,
   postId,
   title,
   tokens,
@@ -14,6 +16,8 @@ export default async function ({
   title?: string
   body?: string
   postId?: number
+  feedId?: number
+  entanglement?: boolean
 }) {
   const tokenChunks = chunk(tokens, 499)
 
@@ -24,7 +28,9 @@ export default async function ({
         priority: 'high',
       },
       data: {
+        feedId: feedId ? String(feedId) : '',
         postId: postId ? String(postId) : '',
+        type: entanglement ? 'entanglement' : 'newpost',
       },
       tokens: chunk,
     } as MulticastMessage
