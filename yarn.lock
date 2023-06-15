@@ -923,10 +923,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/constants@npm:^0.2.0, @big-whale-labs/constants@npm:^0.2.4":
+"@big-whale-labs/constants@npm:^0.2.0":
   version: 0.2.4
   resolution: "@big-whale-labs/constants@npm:0.2.4"
   checksum: c3a6e1e6a9014ef022abe74a792874b2a1351f6d77ad39404c4ab570d3ef7270fc9a5a75c7b19a4f04017237949a79d95596e789354448a65e9c53f1056572a6
+  languageName: node
+  linkType: hard
+
+"@big-whale-labs/constants@npm:^0.2.9":
+  version: 0.2.9
+  resolution: "@big-whale-labs/constants@npm:0.2.9"
+  checksum: 027b685d92c8d0369e1308da414c1c4d82150ee411578e1ff06d6c1a50600bbdee5d67c947e3a76245508400781898a888de788f06fc63205016a3d9db338294
   languageName: node
   linkType: hard
 
@@ -944,19 +951,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/ketl-attestation-token@npm:^0.0.10":
-  version: 0.0.10
-  resolution: "@big-whale-labs/ketl-attestation-token@npm:0.0.10"
-  dependencies:
-    "@big-whale-labs/constants": ^0.1.85
-    "@big-whale-labs/versioned-contract": ^1.0.2
-    "@zk-kit/incremental-merkle-tree": ^1.1.0
-    "@zk-kit/incremental-merkle-tree.sol": ^1.7.0
-    prompt: ^1.3.0
-  checksum: 59e8d86efa87ecd3354a789dd509b4863199ce188e1e17809f4db9b2459f0286916a355bf6b14af0db7c020af570784e2a0f263f7fc8ff55d1990502e24f3752
-  languageName: node
-  linkType: hard
-
 "@big-whale-labs/ketl-attestation-token@npm:^0.0.15":
   version: 0.0.15
   resolution: "@big-whale-labs/ketl-attestation-token@npm:0.0.15"
@@ -971,19 +965,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/obss-storage-contract@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@big-whale-labs/obss-storage-contract@npm:1.0.0"
+"@big-whale-labs/obss-storage-contract@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@big-whale-labs/obss-storage-contract@npm:1.0.2"
   dependencies:
     "@big-whale-labs/constants": ^0.1.85
     "@big-whale-labs/gsn-paymaster-contract": ^0.1.1
-    "@big-whale-labs/ketl-attestation-token": ^0.0.10
+    "@big-whale-labs/ketl-attestation-token": ^0.0.15
     "@openzeppelin/contracts-upgradeable": ^4.8.3
     "@openzeppelin/hardhat-upgrades": ^1.26.0
     "@zk-kit/incremental-merkle-tree": ^1.1.0
     "@zk-kit/incremental-merkle-tree.sol": ^1.7.0
     circomlibjs: ^0.1.7
-  checksum: 301235f590fe6af033fa51bd7cfec2f6797b712e9520a8ff877b9060163fe5dbd6e06b698c4fe320201ad5130b95c7033b49c0db2c23e354f2903dffed0c05e8
+  checksum: 6c44c532ebc34106299953e91d6fc23552bf99dbd7f76f2f7c09c9a792de0235c95f3f0641af8f87d9d8f06e464ff6bac3f645347c78e975c9a7919350ec1857
   languageName: node
   linkType: hard
 
@@ -5620,9 +5614,9 @@ __metadata:
   resolution: "ketl-notifications-backend@workspace:."
   dependencies:
     "@big-whale-labs/bwl-eslint-backend": ^1.0.3
-    "@big-whale-labs/constants": ^0.2.4
+    "@big-whale-labs/constants": ^0.2.9
     "@big-whale-labs/ketl-attestation-token": ^0.0.15
-    "@big-whale-labs/obss-storage-contract": ^1.0.0
+    "@big-whale-labs/obss-storage-contract": ^1.0.2
     "@big-whale-labs/prettier-config": ^1.1.3
     "@hapi/boom": ^10.0.1
     "@koa/cors": ^4.0.0
@@ -8067,6 +8061,7 @@ __metadata:
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 
@@ -8076,6 +8071,7 @@ __metadata:
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: 6a1fe9a77bb9c5176ead919cc4a1499ee63e46b4e05bf667079f11bf3a8f7887f135aa72460a4c3b016e6e6bb65a822cb8689a6d86cbfe92d22cc9f501f09213
   languageName: node
   linkType: hard
 
