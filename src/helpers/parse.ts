@@ -2,7 +2,7 @@ import {
   CommentAddedEvent,
   PostAddedEvent,
 } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
-import generateRandomName from '@/helpers/generateRandomName'
+import { generateRandomName } from '@big-whale-labs/backend-utils'
 import structToCid from '@/helpers/structToCid'
 
 export function parseComemnt(commentEvent: CommentAddedEvent) {
