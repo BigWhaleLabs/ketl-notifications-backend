@@ -19,7 +19,8 @@ export default async function ({
   feedId?: number
   entanglement?: boolean
 }) {
-  const tokenChunks = chunk(tokens, 499)
+  const uniqueTokens = [...new Set(tokens)]
+  const tokenChunks = chunk(uniqueTokens, 499)
 
   // Send multicast messages for each chunk
   for (const chunk of tokenChunks) {
