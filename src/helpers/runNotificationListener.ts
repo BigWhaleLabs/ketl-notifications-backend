@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
-import { TokenModel } from '@/models/Token'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
 import env from '@/helpers/env'
+import getAllValidTokens from '@/helpers/getAllValidTokens'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
@@ -14,8 +14,6 @@ const prodFeeds = {
   2: 't/ketlTeam',
 }
 
-const apnRegex = /^[a-f0-9]{64}$/
-
 const rootFeeds: { [key: number]: string } = env.isProduction
   ? prodFeeds
   : {
@@ -24,15 +22,11 @@ const rootFeeds: { [key: number]: string } = env.isProduction
     }
 
 ketlAttestationContract.on('EntanglementRegistered', async () => {
-  const allTokens = await TokenModel.find()
-  const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
-    if (!apnRegex.test(token)) acc.push(token)
-    return acc
-  }, [])
+  const tokens = await getAllValidTokens()
   try {
     await sendFirebaseNotification({
       entanglement: true,
-      tokens: fcmTokens,
+      tokens,
     })
   } catch (err) {
     console.error(err)
@@ -40,14 +34,10 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
 })
 
 getFeedsContract.on('CommentAdded', async () => {
-  const allTokens = await TokenModel.find()
-  const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
-    if (!apnRegex.test(token)) acc.push(token)
-    return acc
-  }, [])
+  const tokens = await getAllValidTokens()
   try {
     await sendFirebaseNotification({
-      tokens: fcmTokens,
+      tokens,
     })
   } catch (err) {
     console.error(err)
@@ -66,18 +56,14 @@ getFeedsContract.on(
     if (!title) return
     const body = feed && (await getIPFSContent(structToCid(metadata)))
 
-    const allTokens = await TokenModel.find()
-    const fcmTokens = allTokens.reduce((acc: string[], { token }) => {
-      if (!apnRegex.test(token)) acc.push(token)
-      return acc
-    }, [])
+    const tokens = await getAllValidTokens()
     try {
       await sendFirebaseNotification({
         body,
         feedId: feedId.toNumber(),
         postId: postId.toNumber(),
         title,
-        tokens: fcmTokens,
+        tokens,
       })
     } catch (err) {
       console.error(err)
