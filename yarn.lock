@@ -897,9 +897,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/backend-utils@npm:^0.0.20":
-  version: 0.0.20
-  resolution: "@big-whale-labs/backend-utils@npm:0.0.20"
+"@big-whale-labs/backend-utils@npm:^0.0.21":
+  version: 0.0.21
+  resolution: "@big-whale-labs/backend-utils@npm:0.0.21"
   dependencies:
     "@hapi/boom": ^10.0.0
     class-transformer: ^0.5.1
@@ -910,7 +910,7 @@ __metadata:
     module-alias: ^2.2.2
     react-native-quick-crypto: ^0.6.1
     unique-names-generator: ^4.7.1
-  checksum: 701cb70569437cf842a25a745a5e030f15e3ddfef17316c55b291382c862a0873fc7027ce7f2f9dc5da2f19569d8493ed05651230211f70fee976092000e2a14
+  checksum: 7361c37a746a021837ed91f9d40206364f81b1daf242e7e4d79c8e16d3d71990a32dea8bde329470e3dda670ce5a4d93db65eb2409391f4f0f65bb0c37814697
   languageName: node
   linkType: hard
 
@@ -5796,7 +5796,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ketl-notifications-backend@workspace:."
   dependencies:
-    "@big-whale-labs/backend-utils": ^0.0.20
+    "@big-whale-labs/backend-utils": ^0.0.21
     "@big-whale-labs/bwl-eslint-backend": ^1.0.3
     "@big-whale-labs/constants": ^0.2.9
     "@big-whale-labs/ketl-attestation-token": ^0.0.15
