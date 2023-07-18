@@ -9,7 +9,7 @@ WEBHOOK_URL=$HEALTHCHECK_WEBHOOK
 send_to_discord() {
     curl -X POST $WEBHOOK_URL \
         -H "Content-Type: application/json" \
-        -d '{"content": "@dev No successful notifications in the last 24 hours"}' \
+        -d '{"content": "<@&975961160488718386> No successful notifications in the last 24 hours"}' \
         && echo "Message sent to discord" \
         || echo "Error: Message not sent"
 }
