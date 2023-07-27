@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@big-whale-labs/backend-utils": "^0.0.21",
-    "@big-whale-labs/constants": "^0.2.9",
-    "@big-whale-labs/ketl-attestation-token": "^0.0.15",
+    "@big-whale-labs/constants": "0.2.12",
+    "@big-whale-labs/ketl-attestation-token": "0.1.0",
     "@big-whale-labs/obss-storage-contract": "^1.0.2",
     "@hapi/boom": "^10.0.1",
     "@koa/cors": "^4.0.0",
