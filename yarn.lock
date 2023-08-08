@@ -897,9 +897,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/backend-utils@npm:^0.0.21":
-  version: 0.0.21
-  resolution: "@big-whale-labs/backend-utils@npm:0.0.21"
+"@big-whale-labs/backend-utils@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "@big-whale-labs/backend-utils@npm:0.0.22"
   dependencies:
     "@hapi/boom": ^10.0.0
     class-transformer: ^0.5.1
@@ -910,7 +910,7 @@ __metadata:
     module-alias: ^2.2.2
     react-native-quick-crypto: ^0.6.1
     unique-names-generator: ^4.7.1
-  checksum: 7361c37a746a021837ed91f9d40206364f81b1daf242e7e4d79c8e16d3d71990a32dea8bde329470e3dda670ce5a4d93db65eb2409391f4f0f65bb0c37814697
+  checksum: 1305d843ad365629490c97bc5d8734b03a7792a9c7b3ee5a255aee0f47ef5cbb5102409405a1081dd9796c4445012573d2a272e03edf733357b16d3cc23b4985
   languageName: node
   linkType: hard
 
@@ -5812,7 +5812,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ketl-notifications-backend@workspace:."
   dependencies:
-    "@big-whale-labs/backend-utils": ^0.0.21
+    "@big-whale-labs/backend-utils": ^0.0.22
     "@big-whale-labs/bwl-eslint-backend": ^1.0.3
     "@big-whale-labs/constants": 0.2.12
     "@big-whale-labs/ketl-attestation-token": 0.1.0
@@ -7425,14 +7425,14 @@ __metadata:
   linkType: hard
 
 "react-native-quick-base64@npm:^2.0.5":
-  version: 2.0.6
-  resolution: "react-native-quick-base64@npm:2.0.6"
+  version: 2.0.7
+  resolution: "react-native-quick-base64@npm:2.0.7"
   dependencies:
     base64-js: ^1.5.1
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 51763e7e4f0334347de833cd441c6e8339af0e1779c8a435b90597d36cad500f81300068a6f92acb885f16bc5ea4913eda2ba53386803ab3d892c49f67ab9c60
+  checksum: faf25857aaaac8219cf9dd594c186e4263ecfee6b96a983b5a99b5021bf5e436d023dd5716b28f985aefeef46d608fa1f6e6daaca95c40680cd4c43bfb05ce86
   languageName: node
   linkType: hard
 
@@ -8301,9 +8301,9 @@ __metadata:
   linkType: hard
 
 "tslib@npm:^2.0.3":
-  version: 2.5.3
-  resolution: "tslib@npm:2.5.3"
-  checksum: 88902b309afaf83259131c1e13da1dceb0ad1682a213143a1346a649143924d78cf3760c448b84d796938fd76127183894f8d85cbb3bf9c4fddbfcc140c0003c
+  version: 2.6.1
+  resolution: "tslib@npm:2.6.1"
+  checksum: b0d176d176487905b66ae4d5856647df50e37beea7571c53b8d10ba9222c074b81f1410fb91da13debaf2cbc970663609068bdebafa844ea9d69b146527c38fe
   languageName: node
   linkType: hard
 
@@ -8407,17 +8407,17 @@ __metadata:
 
 "typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
+  checksum: 2eee5c37cad4390385db5db5a8e81470e42e8f1401b0358d7390095d6f681b410f2c4a0c496c6ff9ebd775423c7785cdace7bcdad76c7bee283df3d9718c0f20
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^5.0.2#~builtin<compat/typescript>":
   version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=1f5320"
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
