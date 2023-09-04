@@ -2251,6 +2251,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-persist@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@types/node-persist@npm:3.1.4"
+  dependencies:
+    "@types/node": "*"
+  checksum: b81a13f37550d9f365b75579b34167cfb7a2d9b0784f43b66c2d5f309f6f547ab31f07bf7d68cbb63adbf8c7a2390db397017e118d29e3dd82b2d6a4122e3151
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 16.10.4
   resolution: "@types/node@npm:16.10.4"
@@ -5828,6 +5837,7 @@ __metadata:
     "@types/koa__cors": ^3.3.0
     "@types/lodash": ^4.14.194
     "@types/node": ^18.13.0
+    "@types/node-persist": ^3.1.4
     amala: ^8.0.2
     axios: ^1.4.0
     bs58: ^5.0.0
@@ -5843,6 +5853,7 @@ __metadata:
     module-alias: ^2.2.2
     mongodb-memory-server: ^8.11.4
     mongoose: ^6.9.1
+    node-persist: ^3.1.3
     prettier: ^2.8.4
     source-map-support: ^0.5.21
     tsc-watch: ^6.0.0
@@ -6832,6 +6843,13 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: b860e9976fa645ca0789c69e25387401b4396b93c8375489b5151a6c55cf2640a3b6183c212b38625ef7c508994930b72198338e3d09b9d7ade5acc4aaf51ea7
+  languageName: node
+  linkType: hard
+
+"node-persist@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "node-persist@npm:3.1.3"
+  checksum: a67d1f7e646e9926558237b4f30a50cc73ae9e58a1be28fb87203b0b7180b7f7178c380f74229900c62cf7ee139e00c4c8bd5abcbb82e91326d8eb7938a827a9
   languageName: node
   linkType: hard
 
@@ -8411,6 +8429,7 @@ __metadata:
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 
@@ -8420,6 +8439,7 @@ __metadata:
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: 6a1fe9a77bb9c5176ead919cc4a1499ee63e46b4e05bf667079f11bf3a8f7887f135aa72460a4c3b016e6e6bb65a822cb8689a6d86cbfe92d22cc9f501f09213
   languageName: node
   linkType: hard
 

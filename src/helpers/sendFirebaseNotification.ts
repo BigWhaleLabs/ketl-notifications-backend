@@ -1,5 +1,6 @@
 import { MulticastMessage, getMessaging } from 'firebase-admin/messaging'
 import { chunk } from 'lodash'
+import { storeLastTimeSent } from '@/helpers/lastTimeSent'
 import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
@@ -61,9 +62,10 @@ export default async function ({
     }
     console.log('Send next chunk of tokens by sendMulticast')
     const response = await messaging.sendMulticast(message)
-    response.responses.forEach((response) => {
+    response.responses.forEach(async (response) => {
       if (response.success) {
         console.log(response)
+        await storeLastTimeSent(Date.now())
         return
       }
       if (!response.error) return
