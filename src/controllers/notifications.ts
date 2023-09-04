@@ -1,4 +1,5 @@
 import { Controller, Get, Query } from 'amala'
+import { getLastTimeSent } from '@/helpers/lastTimeSent'
 import {
   proccessCommentsForNotifications,
   proccessPostsForNotifications,
@@ -49,5 +50,9 @@ export default class NotificationsController {
       modifiedCommentSinceLastCheck,
       modifiedPostsSinceLastCheck,
     }
+  }
+  @Get('/lastTimeSent')
+  getLastTimeSent() {
+    return getLastTimeSent()
   }
 }
