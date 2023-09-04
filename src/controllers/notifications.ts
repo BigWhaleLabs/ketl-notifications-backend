@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from 'amala'
-import { getLastTimeSent } from '@/helpers/lastTimeSent'
+import { getLastTimeSentFromStorage } from '@/helpers/lastTimeSent'
 import {
-  proccessCommentsForNotifications,
-  proccessPostsForNotifications,
+  processCommentsForNotifications,
+  processPostsForNotifications,
 } from '@/helpers/proccessBlocksForNotifications'
 import defaultProvider from '@/helpers/defaultProvider'
 import getEvents from '@/helpers/getEventst'
@@ -39,9 +39,9 @@ export default class NotificationsController {
     )
 
     const modifiedPostsSinceLastCheck =
-      proccessPostsForNotifications(postsSinceLastCheck)
+      processPostsForNotifications(postsSinceLastCheck)
 
-    const modifiedCommentSinceLastCheck = proccessCommentsForNotifications(
+    const modifiedCommentSinceLastCheck = processCommentsForNotifications(
       commentsSinceLastCheck
     )
 
@@ -53,6 +53,6 @@ export default class NotificationsController {
   }
   @Get('/lastTimeSent')
   getLastTimeSent() {
-    return getLastTimeSent()
+    return getLastTimeSentFromStorage()
   }
 }

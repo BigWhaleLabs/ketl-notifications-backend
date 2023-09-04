@@ -2,10 +2,9 @@ import { getItem, setItem } from 'node-persist'
 
 const lastTimeSentKey = 'lastTimeSent'
 
-export const getLastTimeSent = () => {
+export const getLastTimeSentFromStorage = () => {
   return getItem(lastTimeSentKey)
 }
 
-export const setLastTimeSent = async (lastTimeSent: number) => {
-  await setItem(lastTimeSentKey, lastTimeSent)
-}
+export const storeLastTimeSent = (lastTimeSent: number) =>
+  setItem(lastTimeSentKey, lastTimeSent)

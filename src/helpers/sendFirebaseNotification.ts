@@ -1,6 +1,6 @@
 import { MulticastMessage, getMessaging } from 'firebase-admin/messaging'
 import { chunk } from 'lodash'
-import { setLastTimeSent } from '@/helpers/lastTimeSent'
+import { storeLastTimeSent } from '@/helpers/lastTimeSent'
 import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
@@ -65,7 +65,7 @@ export default async function ({
     response.responses.forEach(async (response) => {
       if (response.success) {
         console.log(response)
-        await setLastTimeSent(Date.now())
+        await storeLastTimeSent(Date.now())
         return
       }
       if (!response.error) return
