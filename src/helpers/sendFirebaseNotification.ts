@@ -61,7 +61,6 @@ export default async function ({
         },
       }
     }
-    console.log('Send next chunk of tokens by sendMulticast', chunk)
     const response = await messaging.sendMulticast(message)
     const deleteTokens: string[] = []
     response.responses.forEach(async (response, index) => {
