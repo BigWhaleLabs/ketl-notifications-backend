@@ -897,9 +897,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/backend-utils@npm:^0.0.21":
-  version: 0.0.21
-  resolution: "@big-whale-labs/backend-utils@npm:0.0.21"
+"@big-whale-labs/backend-utils@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "@big-whale-labs/backend-utils@npm:0.0.22"
   dependencies:
     "@hapi/boom": ^10.0.0
     class-transformer: ^0.5.1
@@ -910,7 +910,7 @@ __metadata:
     module-alias: ^2.2.2
     react-native-quick-crypto: ^0.6.1
     unique-names-generator: ^4.7.1
-  checksum: 7361c37a746a021837ed91f9d40206364f81b1daf242e7e4d79c8e16d3d71990a32dea8bde329470e3dda670ce5a4d93db65eb2409391f4f0f65bb0c37814697
+  checksum: 1305d843ad365629490c97bc5d8734b03a7792a9c7b3ee5a255aee0f47ef5cbb5102409405a1081dd9796c4445012573d2a272e03edf733357b16d3cc23b4985
   languageName: node
   linkType: hard
 
@@ -2248,6 +2248,15 @@ __metadata:
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
   checksum: 0391a282860c7cb6fe262c12b99564732401bdaa5e395bee9ca323c312c1a0f45efbf34dce974682036e857db59a5c9b1da522f3d6055aeead7097264c8705a8
+  languageName: node
+  linkType: hard
+
+"@types/node-persist@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@types/node-persist@npm:3.1.4"
+  dependencies:
+    "@types/node": "*"
+  checksum: b81a13f37550d9f365b75579b34167cfb7a2d9b0784f43b66c2d5f309f6f547ab31f07bf7d68cbb63adbf8c7a2390db397017e118d29e3dd82b2d6a4122e3151
   languageName: node
   linkType: hard
 
@@ -5812,7 +5821,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ketl-notifications-backend@workspace:."
   dependencies:
-    "@big-whale-labs/backend-utils": ^0.0.21
+    "@big-whale-labs/backend-utils": ^0.0.22
     "@big-whale-labs/bwl-eslint-backend": ^1.0.3
     "@big-whale-labs/constants": 0.2.12
     "@big-whale-labs/ketl-attestation-token": 0.1.0
@@ -5828,6 +5837,7 @@ __metadata:
     "@types/koa__cors": ^3.3.0
     "@types/lodash": ^4.14.194
     "@types/node": ^18.13.0
+    "@types/node-persist": ^3.1.4
     amala: ^8.0.2
     axios: ^1.4.0
     bs58: ^5.0.0
@@ -5843,6 +5853,7 @@ __metadata:
     module-alias: ^2.2.2
     mongodb-memory-server: ^8.11.4
     mongoose: ^6.9.1
+    node-persist: ^3.1.3
     prettier: ^2.8.4
     source-map-support: ^0.5.21
     tsc-watch: ^6.0.0
@@ -6835,6 +6846,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-persist@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "node-persist@npm:3.1.3"
+  checksum: a67d1f7e646e9926558237b4f30a50cc73ae9e58a1be28fb87203b0b7180b7f7178c380f74229900c62cf7ee139e00c4c8bd5abcbb82e91326d8eb7938a827a9
+  languageName: node
+  linkType: hard
+
 "nofilter@npm:^3.1.0":
   version: 3.1.0
   resolution: "nofilter@npm:3.1.0"
@@ -7425,14 +7443,14 @@ __metadata:
   linkType: hard
 
 "react-native-quick-base64@npm:^2.0.5":
-  version: 2.0.6
-  resolution: "react-native-quick-base64@npm:2.0.6"
+  version: 2.0.7
+  resolution: "react-native-quick-base64@npm:2.0.7"
   dependencies:
     base64-js: ^1.5.1
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 51763e7e4f0334347de833cd441c6e8339af0e1779c8a435b90597d36cad500f81300068a6f92acb885f16bc5ea4913eda2ba53386803ab3d892c49f67ab9c60
+  checksum: faf25857aaaac8219cf9dd594c186e4263ecfee6b96a983b5a99b5021bf5e436d023dd5716b28f985aefeef46d608fa1f6e6daaca95c40680cd4c43bfb05ce86
   languageName: node
   linkType: hard
 
@@ -8301,9 +8319,9 @@ __metadata:
   linkType: hard
 
 "tslib@npm:^2.0.3":
-  version: 2.5.3
-  resolution: "tslib@npm:2.5.3"
-  checksum: 88902b309afaf83259131c1e13da1dceb0ad1682a213143a1346a649143924d78cf3760c448b84d796938fd76127183894f8d85cbb3bf9c4fddbfcc140c0003c
+  version: 2.6.1
+  resolution: "tslib@npm:2.6.1"
+  checksum: b0d176d176487905b66ae4d5856647df50e37beea7571c53b8d10ba9222c074b81f1410fb91da13debaf2cbc970663609068bdebafa844ea9d69b146527c38fe
   languageName: node
   linkType: hard
 

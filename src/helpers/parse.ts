@@ -5,7 +5,7 @@ import {
 import { generateRandomName } from '@big-whale-labs/backend-utils'
 import structToCid from '@/helpers/structToCid'
 
-export function parseComemnt(commentEvent: CommentAddedEvent) {
+export function parseComment(commentEvent: CommentAddedEvent) {
   const { args } = commentEvent
   const feedId = args[0].toNumber()
   const postId = args[1].toNumber()
