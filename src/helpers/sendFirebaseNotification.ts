@@ -62,7 +62,9 @@ export default async function ({
       }
     }
     const response = await messaging.sendMulticast(message)
-    const deleteTokens: string[] = []
+    const notificationErrorStrings =
+      /(registration-token-not-registered|invalid-registration-token)/
+    const tokensToDelete: string[] = []
     response.responses.forEach(async (response, index) => {
       const token = chunk[index]
       if (response.success) {
@@ -72,17 +74,14 @@ export default async function ({
       }
       if (!response.error) return
       const errorCode = response.error.code
-      if (
-        /(registration-token-not-registered|invalid-registration-token|invalid-argument)/.test(
-          errorCode
-        )
-      ) {
+
+      if (notificationErrorStrings.test(errorCode)) {
         console.log(errorCode)
-        deleteTokens.push(token)
+        tokensToDelete.push(token)
         return
       }
       console.error(errorCode, response.error)
     })
-    await TokenModel.deleteMany({ token: { $in: deleteTokens } })
+    await TokenModel.deleteMany({ token: { $in: tokensToDelete } })
   }
 }
