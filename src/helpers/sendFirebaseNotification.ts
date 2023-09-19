@@ -38,7 +38,7 @@ export default async function ({
         postId: postId ? String(postId) : '',
         type: entanglement ? 'entanglement' : 'newpost',
       },
-      tokens: chunk,
+      tokens: chunk.filter((token) => !!token),
     } as MulticastMessage
 
     if (title) {
@@ -61,17 +61,22 @@ export default async function ({
       }
     }
     console.log('Send next chunk of tokens by sendMulticast')
-    const response = await messaging.sendMulticast(message)
-    response.responses.forEach(async (response) => {
-      if (response.success) {
-        console.log(response)
-        await storeLastTimeSent(Date.now())
-        return
-      }
-      if (!response.error) return
-      if (response.error.code === 'messaging/registration-token-not-registered')
-        return
-      console.error(response.error)
-    })
+    try {
+      const response = await messaging.sendMulticast(message)
+      response.responses.forEach(async (response) => {
+        if (response.success) {
+          await storeLastTimeSent(Date.now())
+          return
+        }
+        if (!response.error) return
+        if (
+          response.error.code === 'messaging/registration-token-not-registered'
+        )
+          return
+        console.error(response.error)
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
