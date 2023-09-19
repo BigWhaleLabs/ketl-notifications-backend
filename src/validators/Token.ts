@@ -1,6 +1,7 @@
-import { IsString } from 'amala'
+import { IsNotEmpty, IsString } from 'amala'
 
 export default class {
-  @IsString()
+  @IsNotEmpty({ always: true })
+  @IsString({ always: true })
   token!: string
 }
