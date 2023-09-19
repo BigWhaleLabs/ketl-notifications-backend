@@ -12,9 +12,7 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      const previousToken = await TokenModel.findOne({
-        token,
-      })
+      const previousToken = await TokenModel.findOne({ token })
       if (previousToken) return { success: true }
 
       await TokenModel.create({ token })
