@@ -16,24 +16,24 @@ export default class SettingsController {
       const tokenRecord = await TokenModel.findOne({
         token,
       })
-      if (!tokenRecord) return ctx.throw(badRequest(`Can't find token`))
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find token"))
 
-      const settings = await SettingsModel.findOne({
-        token: tokenRecord,
-      })
-      if (settings) return { success: true }
-
-      await SettingsModel.create({
-        allPostsEnabled,
-        hotPostsEnabled,
-        repliesEnabled,
-        token,
-      })
+      await SettingsModel.updateOne(
+        { token: tokenRecord },
+        {
+          allPostsEnabled,
+          hotPostsEnabled,
+          repliesEnabled,
+        },
+        {
+          upsert: true,
+        }
+      )
 
       return { success: true }
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal(`Can't save setting`))
+      return ctx.throw(internal("Can't save setting"))
     }
   }
 
@@ -47,10 +47,10 @@ export default class SettingsController {
       const tokenRecord = await TokenModel.findOne({
         token,
       })
-      if (!tokenRecord) return ctx.throw(badRequest(`Can't find token`))
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find token"))
 
-      await SettingsModel.updateMany(
-        { token },
+      await SettingsModel.updateOne(
+        { token: tokenRecord },
         {
           allPostsEnabled,
           hotPostsEnabled,
@@ -61,7 +61,7 @@ export default class SettingsController {
       return { success: true }
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal(`Can't save setting`))
+      return ctx.throw(internal("Can't save setting"))
     }
   }
 
@@ -71,12 +71,12 @@ export default class SettingsController {
       const tokenRecord = await TokenModel.findOne({
         token,
       })
-      if (!tokenRecord) return ctx.throw(badRequest(`Can't find token`))
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find token"))
 
       return findOneOrCreate(tokenRecord)
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal(`Can't save token`))
+      return ctx.throw(internal("Can't save token"))
     }
   }
 }
