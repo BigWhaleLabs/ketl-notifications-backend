@@ -22,7 +22,7 @@ export default class TokenController {
       return { success: true }
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal(`Can't save token`))
+      return ctx.throw(internal("Can't save token"))
     }
   }
 
@@ -44,7 +44,7 @@ export default class TokenController {
       return { success: true }
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal(`Can't update token`))
+      return ctx.throw(internal("Can't update token"))
     }
   }
 
@@ -58,7 +58,7 @@ export default class TokenController {
       await TokenModel.deleteMany({ token })
       return { success: true }
     } catch {
-      return ctx.throw(internal(`Can't delete token`))
+      return ctx.throw(internal("Can't delete token"))
     }
   }
 }
