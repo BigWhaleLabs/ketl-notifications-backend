@@ -15,7 +15,7 @@ export class Settings {
   public repliesEnabled?: boolean
 }
 
-export function findOne(token: Token) {
+export function findSettingsByToken(token: Token) {
   return SettingsModel.findOne(
     {
       token,
@@ -25,13 +25,13 @@ export function findOne(token: Token) {
 }
 
 export async function findOneOrCreate(token: Token) {
-  const setting = await findOne(token)
+  const setting = await findSettingsByToken(token)
 
   if (setting) return setting
 
   await SettingsModel.create({ token })
 
-  return findOne(token)
+  return findSettingsByToken(token)
 }
 
 export const SettingsModel = getModelForClass(Settings)
