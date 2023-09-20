@@ -16,7 +16,7 @@ export default class SettingsController {
       const tokenRecord = await TokenModel.findOne({
         token,
       })
-      if (!tokenRecord) return ctx.throw(badRequest("Can't find token"))
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
 
       await SettingsModel.updateOne(
         { token: tokenRecord },
@@ -33,7 +33,7 @@ export default class SettingsController {
       return { success: true }
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal("Can't save setting"))
+      return ctx.throw(internal("Can't save the setting"))
     }
   }
 
@@ -47,7 +47,7 @@ export default class SettingsController {
       const tokenRecord = await TokenModel.findOne({
         token,
       })
-      if (!tokenRecord) return ctx.throw(badRequest("Can't find token"))
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
 
       await SettingsModel.updateOne(
         { token: tokenRecord },
@@ -61,7 +61,7 @@ export default class SettingsController {
       return { success: true }
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal("Can't save setting"))
+      return ctx.throw(internal("Can't save the setting"))
     }
   }
 
@@ -71,12 +71,12 @@ export default class SettingsController {
       const tokenRecord = await TokenModel.findOne({
         token,
       })
-      if (!tokenRecord) return ctx.throw(badRequest("Can't find token"))
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
 
       return findOneOrCreate(tokenRecord)
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal("Can't save token"))
+      return ctx.throw(internal("Can't find the setting"))
     }
   }
 }
