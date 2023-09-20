@@ -1,4 +1,5 @@
 import { MulticastMessage, getMessaging } from 'firebase-admin/messaging'
+import { TokenModel } from '@/models/Token'
 import { chunk } from 'lodash'
 import { storeLastTimeSent } from '@/helpers/lastTimeSent'
 import firebase from '@/helpers/firebase'
@@ -60,21 +61,29 @@ export default async function ({
         },
       }
     }
-    console.log('Send next chunk of tokens by sendMulticast')
     try {
       const response = await messaging.sendMulticast(message)
-      response.responses.forEach(async (response) => {
+      const notificationErrorStrings =
+        /(registration-token-not-registered|invalid-registration-token)/
+      const tokensToDelete: string[] = []
+      response.responses.forEach(async (response, index) => {
+        const token = chunk[index]
         if (response.success) {
+          console.log(response)
           await storeLastTimeSent(Date.now())
           return
         }
         if (!response.error) return
-        if (
-          response.error.code === 'messaging/registration-token-not-registered'
-        )
+        const errorCode = response.error.code
+
+        if (notificationErrorStrings.test(errorCode)) {
+          console.log(errorCode)
+          tokensToDelete.push(token)
           return
-        console.error(response.error)
+        }
+        console.error(errorCode, response.error)
       })
+      await TokenModel.deleteMany({ token: { $in: tokensToDelete } })
     } catch (err) {
       console.error(err)
     }
