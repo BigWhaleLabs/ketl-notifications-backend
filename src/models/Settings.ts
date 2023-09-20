@@ -5,8 +5,8 @@ import { Token } from '@/models/Token'
   schemaOptions: { timestamps: true },
 })
 export class Settings {
-  @prop({ ref: () => Token, type: () => String })
-  public token?: Ref<Token, string>
+  @prop({ ref: () => Token })
+  public token?: Ref<Token>
   @prop({ default: true })
   public allPostsEnabled?: boolean
   @prop({ default: true })
