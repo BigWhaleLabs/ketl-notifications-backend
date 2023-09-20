@@ -39,7 +39,7 @@ export default async function ({
         postId: postId ? String(postId) : '',
         type: entanglement ? 'entanglement' : 'newpost',
       },
-      tokens: chunk,
+      tokens: chunk.filter((token) => !!token),
     } as MulticastMessage
 
     if (title) {
@@ -61,27 +61,31 @@ export default async function ({
         },
       }
     }
-    const response = await messaging.sendMulticast(message)
-    const notificationErrorStrings =
-      /(registration-token-not-registered|invalid-registration-token)/
-    const tokensToDelete: string[] = []
-    response.responses.forEach(async (response, index) => {
-      const token = chunk[index]
-      if (response.success) {
-        console.log(response)
-        await storeLastTimeSent(Date.now())
-        return
-      }
-      if (!response.error) return
-      const errorCode = response.error.code
+    try {
+      const response = await messaging.sendMulticast(message)
+      const notificationErrorStrings =
+        /(registration-token-not-registered|invalid-registration-token)/
+      const tokensToDelete: string[] = []
+      response.responses.forEach(async (response, index) => {
+        const token = chunk[index]
+        if (response.success) {
+          console.log(response)
+          await storeLastTimeSent(Date.now())
+          return
+        }
+        if (!response.error) return
+        const errorCode = response.error.code
 
-      if (notificationErrorStrings.test(errorCode)) {
-        console.log(errorCode)
-        tokensToDelete.push(token)
-        return
-      }
-      console.error(errorCode, response.error)
-    })
-    await TokenModel.deleteMany({ token: { $in: tokensToDelete } })
+        if (notificationErrorStrings.test(errorCode)) {
+          console.log(errorCode)
+          tokensToDelete.push(token)
+          return
+        }
+        console.error(errorCode, response.error)
+      })
+      await TokenModel.deleteMany({ token: { $in: tokensToDelete } })
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
