@@ -23,7 +23,7 @@ export default async function () {
   app.use(cors({ origin: '*' }))
   app.use(
     ratelimit({
-      db: db,
+      db,
       disableHeader: false,
       driver: 'memory',
       duration: 1000,
