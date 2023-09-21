@@ -1,5 +1,5 @@
 import { Ref, getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
-import { Token } from '@/models/Token'
+import { Token, TokenModel } from '@/models/Token'
 
 @modelOptions({
   schemaOptions: { timestamps: true },
@@ -61,6 +61,18 @@ export async function createOrUpdateSettings(
 
 export async function deleteSettings(token: Token) {
   await SettingsModel.deleteOne({ token })
+}
+
+export async function excludeTokensWithParams(params?: Partial<Settings>) {
+  const tokens = await TokenModel.find({
+    token: { $not: { $regex: /^[a-f0-9]{64}$/ } },
+  })
+  if (!params) return tokens.map(({ token }) => token.toString())
+  const settings = await SettingsModel.find(params)
+  const tokenSet = new Set(settings.map(({ token }) => token?.toString()))
+  return tokens
+    .filter(({ _id }) => !tokenSet.has(_id.toString()))
+    .map(({ token }) => token.toString())
 }
 
 export const SettingsModel = getModelForClass(Settings)

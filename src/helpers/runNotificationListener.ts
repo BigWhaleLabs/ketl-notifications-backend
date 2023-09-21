@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
+import { excludeTokensWithParams } from '@/models/Settings'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
 import env from '@/helpers/env'
-import getAllValidTokens from '@/helpers/getAllValidTokens'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
@@ -22,8 +22,8 @@ const rootFeeds: { [key: number]: string } = env.isProduction
     }
 
 ketlAttestationContract.on('EntanglementRegistered', async () => {
-  const tokens = await getAllValidTokens()
   try {
+    const tokens = await excludeTokensWithParams()
     await sendFirebaseNotification({
       entanglement: true,
       tokens,
@@ -34,8 +34,11 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
 })
 
 getFeedsContract.on('CommentAdded', async () => {
-  const tokens = await getAllValidTokens()
   try {
+    const tokens = await excludeTokensWithParams({
+      repliesEnabled: false,
+    })
+
     await sendFirebaseNotification({
       tokens,
     })
@@ -51,13 +54,16 @@ getFeedsContract.on(
     postId: BigNumber,
     [author, metadata]: PostStructOutput
   ) => {
-    const feed = rootFeeds[feedId.toNumber()]
-    const title = feed && `@${generateRandomName(author)} posted at ${feed}`
-    if (!title) return
-    const body = feed && (await getIPFSContent(structToCid(metadata)))
-
-    const tokens = await getAllValidTokens()
     try {
+      const feed = rootFeeds[feedId.toNumber()]
+      const title = feed && `@${generateRandomName(author)} posted at ${feed}`
+      if (!title) return
+      const body = feed && (await getIPFSContent(structToCid(metadata)))
+
+      const tokens = await excludeTokensWithParams({
+        allPostsEnabled: false,
+      })
+
       await sendFirebaseNotification({
         body,
         feedId: feedId.toNumber(),
