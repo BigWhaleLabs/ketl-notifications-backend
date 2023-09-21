@@ -25,7 +25,7 @@ export default class TokenController {
   @Put('/:token')
   async replaceToken(
     @Params('token') oldToken: string,
-    @Body({ required: true }) { token }: Token,
+    @Body({ required: true }) body: Token,
     @Ctx() ctx: Context
   ) {
     try {
@@ -34,7 +34,7 @@ export default class TokenController {
       })
       if (!previousToken) return ctx.throw(badRequest("Can't find the token"))
 
-      previousToken.token = token
+      previousToken.token = body.token
       await previousToken.save()
 
       return { success: true }
