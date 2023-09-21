@@ -27,9 +27,12 @@ export async function findOneOrCreate(token: Token) {
 
   if (notificationSettings) return notificationSettings
 
-  await NotificationsSettingsModel.create({ token })
-
-  return findSettingsByToken(token)
+  // TODO: make sure it returns properly
+  return (await NotificationsSettingsModel.create({ token })).populate([
+    'repliesEnabled',
+    'hotPostsEnabled',
+    'allPostsEnabled',
+  ])
 }
 
 export async function createOrUpdateSettings(

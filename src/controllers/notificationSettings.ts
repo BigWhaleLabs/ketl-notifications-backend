@@ -7,15 +7,15 @@ import {
   deleteSettings,
   findOneOrCreate,
 } from '@/models/NotificationSettings'
-import Settings from '@/validators/Settings'
+import NotificationSettings from '@/validators/NotificationSettings'
 
-@Controller('/settings')
+@Controller('/notificationSettings')
 export default class SettingsController {
   @Post('/:token')
   async addSettings(
     @Params('token') token: string,
     @Body({ required: true })
-    body: Settings,
+    body: NotificationSettings,
     @Ctx() ctx: Context
   ) {
     try {
@@ -42,7 +42,7 @@ export default class SettingsController {
   async updateSettings(
     @Params('token') token: string,
     @Body({ required: true })
-    body: Settings,
+    body: NotificationSettings,
     @Ctx() ctx: Context
   ) {
     try {
@@ -83,17 +83,14 @@ export default class SettingsController {
   }
 
   @Get('/:token')
-  async getData(@Params('token') token: string, @Ctx() ctx: Context) {
+  getData(@Params('token') token: string, @Ctx() ctx: Context) {
     try {
-      const tokenRecord = await TokenModel.findOne({
-        token,
-      })
-      if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
-
-      return findOneOrCreate(tokenRecord)
+      const sett = findOneOrCreate({ token })
+      console.log(sett)
+      return sett
     } catch (e) {
       console.error(e)
-      return ctx.throw(internal("Can't find the setting"))
+      return ctx.throw(internal("Can't get or create user  setting"))
     }
   }
 }
