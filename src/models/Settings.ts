@@ -34,4 +34,33 @@ export async function findOneOrCreate(token: Token) {
   return findSettingsByToken(token)
 }
 
+export async function createOrUpdateSettings(
+  token: Token,
+  {
+    allPostsEnabled,
+    hotPostsEnabled,
+    repliesEnabled,
+  }: {
+    allPostsEnabled: boolean
+    hotPostsEnabled: boolean
+    repliesEnabled: boolean
+  }
+) {
+  await SettingsModel.updateOne(
+    { token },
+    {
+      allPostsEnabled,
+      hotPostsEnabled,
+      repliesEnabled,
+    },
+    {
+      upsert: true,
+    }
+  )
+}
+
+export async function deleteSettings(token: Token) {
+  await SettingsModel.deleteOne({ token })
+}
+
 export const SettingsModel = getModelForClass(Settings)

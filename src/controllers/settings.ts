@@ -1,34 +1,35 @@
-import { Body, Controller, Ctx, Get, Post, Put, Query } from 'amala'
+import { Body, Controller, Ctx, Delete, Get, Params, Post, Put } from 'amala'
 import { Context } from 'vm'
-import { Settings, SettingsModel, findOneOrCreate } from '@/models/Settings'
 import { TokenModel } from '@/models/Token'
 import { badRequest, internal } from '@hapi/boom'
+import {
+  createOrUpdateSettings,
+  deleteSettings,
+  findOneOrCreate,
+} from '@/models/Settings'
+import Settings from '@/validators/Settings'
 
 @Controller('/settings')
 export default class SettingsController {
-  @Post('/')
+  @Post('/:token')
   async addSettings(
+    @Params('token') token: string,
     @Body({ required: true })
-    { allPostsEnabled, hotPostsEnabled, repliesEnabled, token }: Settings,
+    body: Settings,
     @Ctx() ctx: Context
   ) {
     try {
+      const { allPostsEnabled, hotPostsEnabled, repliesEnabled } = body
       const tokenRecord = await TokenModel.findOne({
         token,
       })
       if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
 
-      await SettingsModel.updateOne(
-        { token: tokenRecord },
-        {
-          allPostsEnabled,
-          hotPostsEnabled,
-          repliesEnabled,
-        },
-        {
-          upsert: true,
-        }
-      )
+      await createOrUpdateSettings(tokenRecord, {
+        allPostsEnabled,
+        hotPostsEnabled,
+        repliesEnabled,
+      })
 
       return { success: true }
     } catch (e) {
@@ -37,26 +38,25 @@ export default class SettingsController {
     }
   }
 
-  @Put('/')
+  @Put('/:token')
   async updateSettings(
+    @Params('token') token: string,
     @Body({ required: true })
-    { allPostsEnabled, hotPostsEnabled, repliesEnabled, token }: Settings,
+    body: Settings,
     @Ctx() ctx: Context
   ) {
     try {
+      const { allPostsEnabled, hotPostsEnabled, repliesEnabled } = body
       const tokenRecord = await TokenModel.findOne({
         token,
       })
       if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
 
-      await SettingsModel.updateOne(
-        { token: tokenRecord },
-        {
-          allPostsEnabled,
-          hotPostsEnabled,
-          repliesEnabled,
-        }
-      )
+      await createOrUpdateSettings(tokenRecord, {
+        allPostsEnabled,
+        hotPostsEnabled,
+        repliesEnabled,
+      })
 
       return { success: true }
     } catch (e) {
@@ -65,8 +65,25 @@ export default class SettingsController {
     }
   }
 
-  @Get('/')
-  async getData(@Query('token') token: string, @Ctx() ctx: Context) {
+  @Delete('/:token')
+  async deleteSettings(@Params('token') token: string, @Ctx() ctx: Context) {
+    try {
+      const tokenRecord = await TokenModel.findOne({
+        token,
+      })
+      if (!tokenRecord) return ctx.throw(badRequest("Can't find the token"))
+
+      await deleteSettings(tokenRecord)
+
+      return { success: true }
+    } catch (e) {
+      console.error(e)
+      return ctx.throw(internal("Can't save the setting"))
+    }
+  }
+
+  @Get('/:token')
+  async getData(@Params('token') token: string, @Ctx() ctx: Context) {
     try {
       const tokenRecord = await TokenModel.findOne({
         token,
