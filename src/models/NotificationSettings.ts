@@ -1,10 +1,9 @@
 import { Ref, getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
 import { Token, TokenModel } from '@/models/Token'
+import notificationTokenRegex from '@/helpers/regexes'
 
-@modelOptions({
-  schemaOptions: { timestamps: true },
-})
-export class Settings {
+@modelOptions({ schemaOptions: { timestamps: true } })
+export class NotificationSettings {
   @prop({ ref: () => Token })
   public token?: Ref<Token>
   @prop({ default: true })
@@ -16,20 +15,19 @@ export class Settings {
 }
 
 export function findSettingsByToken(token: Token) {
-  return SettingsModel.findOne(
-    {
-      token,
-    },
-    ['repliesEnabled', 'hotPostsEnabled', 'allPostsEnabled']
-  )
+  return NotificationsSettingsModel.findOne({ token }, [
+    'repliesEnabled',
+    'hotPostsEnabled',
+    'allPostsEnabled',
+  ])
 }
 
 export async function findOneOrCreate(token: Token) {
-  const setting = await findSettingsByToken(token)
+  const notificationSettings = await findSettingsByToken(token)
 
-  if (setting) return setting
+  if (notificationSettings) return notificationSettings
 
-  await SettingsModel.create({ token })
+  await NotificationsSettingsModel.create({ token })
 
   return findSettingsByToken(token)
 }
@@ -46,33 +44,33 @@ export async function createOrUpdateSettings(
     repliesEnabled: boolean
   }
 ) {
-  await SettingsModel.updateOne(
+  await NotificationsSettingsModel.updateOne(
     { token },
     {
       allPostsEnabled,
       hotPostsEnabled,
       repliesEnabled,
     },
-    {
-      upsert: true,
-    }
+    { upsert: true }
   )
 }
 
 export async function deleteSettings(token: Token) {
-  await SettingsModel.deleteOne({ token })
+  await NotificationsSettingsModel.deleteOne({ token })
 }
 
-export async function excludeTokensWithParams(params?: Partial<Settings>) {
+export async function excludeTokensWithParams(
+  params?: Partial<NotificationSettings>
+) {
   const tokens = await TokenModel.find({
-    token: { $not: { $regex: /^[a-f0-9]{64}$/ } },
+    token: { $not: { $regex: notificationTokenRegex } },
   })
   if (!params) return tokens.map(({ token }) => token.toString())
-  const settings = await SettingsModel.find(params)
+  const settings = await NotificationsSettingsModel.find(params)
   const tokenSet = new Set(settings.map(({ token }) => token?.toString()))
   return tokens
     .filter(({ _id }) => !tokenSet.has(_id.toString()))
     .map(({ token }) => token.toString())
 }
 
-export const SettingsModel = getModelForClass(Settings)
+export const NotificationsSettingsModel = getModelForClass(NotificationSettings)

@@ -6,7 +6,7 @@ import {
   createOrUpdateSettings,
   deleteSettings,
   findOneOrCreate,
-} from '@/models/Settings'
+} from '@/models/NotificationSettings'
 import Settings from '@/validators/Settings'
 
 @Controller('/settings')
