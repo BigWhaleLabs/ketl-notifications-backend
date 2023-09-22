@@ -14,16 +14,18 @@ export class TokenWithSettings {
 }
 
 interface Settings {
-  allPostsEnabled: boolean
-  hotPostsEnabled: boolean
-  repliesEnabled: boolean
+  allPostsEnabled?: boolean
+  hotPostsEnabled?: boolean
+  repliesEnabled?: boolean
 }
 
 export function findSettingsByToken(token: string) {
-  return TokenModel.findOne({ token }, [
+  return TokenModel.findOne({ token }).select([
+    '-_id',
     'repliesEnabled',
     'hotPostsEnabled',
     'allPostsEnabled',
+    'token',
   ])
 }
 

@@ -37,11 +37,12 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      const previousToken = await TokenModel.findOne({ token: oldToken })
-      if (!previousToken) return ctx.throw(badRequest("Can't find the token"))
+      const previousData = await TokenModel.findOne({ token: oldToken })
+      if (!previousData?.token)
+        return ctx.throw(badRequest("Can't find the token"))
 
-      previousToken.token = body.token
-      await previousToken.save()
+      previousData.token = body.token
+      await previousData.save()
 
       return { success: true }
     } catch (e) {
@@ -54,7 +55,8 @@ export default class TokenController {
   async getSettings(@Params('token') token: string, @Ctx() ctx: Context) {
     try {
       const result = await findSettingsByToken(token)
-      if (!result?.token) throw "Can't find user settings"
+      console.log(result)
+      if (!result?.token) throw "Can't get user data"
       return result
     } catch (e) {
       console.error(e)

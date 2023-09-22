@@ -1,13 +1,16 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'amala'
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'amala'
 
 export default class {
   @IsString()
   @IsNotEmpty()
   token!: string
   @IsBoolean()
-  allPostsEnabled!: boolean
+  @IsOptional()
+  allPostsEnabled?: boolean
   @IsBoolean()
-  hotPostsEnabled!: boolean
+  @IsOptional()
+  hotPostsEnabled?: boolean
   @IsBoolean()
-  repliesEnabled!: boolean
+  @IsOptional()
+  repliesEnabled?: boolean
 }
