@@ -14,9 +14,8 @@ async function getParticipants(feedId: number, postId: number) {
 }
 
 async function getNumberOfComments(feedId: number, postId: number) {
-  const number = await getFeedsContract.lastCommentIds(feedId, postId)
-  console.log('number', number)
-  return number.toNumber()
+  const lastCommentId = await getFeedsContract.lastCommentIds(feedId, postId)
+  return lastCommentId.toNumber()
 }
 
 async function getNumberOfLikes(feedId: number, postId: number) {
