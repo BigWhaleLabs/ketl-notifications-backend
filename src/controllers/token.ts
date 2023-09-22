@@ -55,7 +55,6 @@ export default class TokenController {
   async getSettings(@Params('token') token: string, @Ctx() ctx: Context) {
     try {
       const result = await findSettingsByToken(token)
-      console.log(result)
       if (!result?.token) throw "Can't get user data"
       return result
     } catch (e) {
