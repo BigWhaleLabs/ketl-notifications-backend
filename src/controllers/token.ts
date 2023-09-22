@@ -1,19 +1,27 @@
-import { Body, Controller, Ctx, Delete, Params, Post, Put, Query } from 'amala'
+import { Body, Controller, Ctx, Get, Params, Post, Put } from 'amala'
 import { Context } from 'koa'
-import { TokenModel } from '@/models/Token'
+import {
+  TokenModel,
+  findSettingsByToken,
+  updateTokenWithSettings,
+} from '@/models/TokenWithSettings'
 import { badRequest, internal } from '@hapi/boom'
-import Token from '@/validators/Token'
+import TokenWithSettings from '@/validators/TokenWithSettings'
 
 @Controller('/token')
 export default class TokenController {
   @Post('/')
-  async addToken(@Body({ required: true }) body: Token, @Ctx() ctx: Context) {
+  async addToken(
+    @Body({ required: true }) body: TokenWithSettings,
+    @Ctx() ctx: Context
+  ) {
     try {
-      const token = body.token
-      const previousToken = await TokenModel.findOne({ token })
-      if (previousToken) return { success: true }
-
-      await TokenModel.create({ token })
+      const { allPostsEnabled, hotPostsEnabled, repliesEnabled, token } = body
+      await updateTokenWithSettings(token, {
+        allPostsEnabled,
+        hotPostsEnabled,
+        repliesEnabled,
+      })
 
       return { success: true }
     } catch (e) {
@@ -25,7 +33,7 @@ export default class TokenController {
   @Put('/:token')
   async replaceToken(
     @Params('token') oldToken: string,
-    @Body({ required: true }) body: Token,
+    @Body({ required: true }) body: TokenWithSettings,
     @Ctx() ctx: Context
   ) {
     try {
@@ -42,17 +50,15 @@ export default class TokenController {
     }
   }
 
-  @Delete('/')
-  async deleteToken(
-    @Query({ required: true })
-    body: Token,
-    @Ctx() ctx: Context
-  ) {
+  @Get('/:token')
+  async getSettings(@Params('token') token: string, @Ctx() ctx: Context) {
     try {
-      await TokenModel.deleteMany({ token: body.token })
-      return { success: true }
-    } catch {
-      return ctx.throw(internal("Can't delete token"))
+      const result = await findSettingsByToken(token)
+      if (!result?.token) throw "Can't find user settings"
+      return result
+    } catch (e) {
+      console.error(e)
+      return ctx.throw(internal("Can't get user push notifications setting"))
     }
   }
 }

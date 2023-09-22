@@ -1,5 +1,5 @@
 import { MulticastMessage, getMessaging } from 'firebase-admin/messaging'
-import { TokenModel } from '@/models/Token'
+import { TokenModel } from '@/models/TokenWithSettings'
 import { chunk } from 'lodash'
 import { storeLastTimeSent } from '@/helpers/lastTimeSent'
 import firebase from '@/helpers/firebase'

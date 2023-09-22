@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
-import { excludeTokensWithParams } from '@/models/NotificationSettings'
+import { excludeTokensWithParams } from '@/models/TokenWithSettings'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
 import { rootFeeds } from '@/helpers/feedsData'
 import getFeedsContract from '@/helpers/getFeedsContract'
