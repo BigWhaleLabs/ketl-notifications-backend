@@ -8,7 +8,7 @@ import { internal } from '@hapi/boom'
 import NotificationSettings from '@/validators/NotificationSettings'
 
 @Controller('/notificationSettings')
-export default class SettingsController {
+export default class NotificationSettingsController {
   @Post('/')
   async addSettings(
     @Body({ required: true }) body: NotificationSettings,
