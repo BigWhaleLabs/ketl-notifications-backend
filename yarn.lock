@@ -933,13 +933,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/constants@npm:0.2.12, @big-whale-labs/constants@npm:^0.2.10":
-  version: 0.2.12
-  resolution: "@big-whale-labs/constants@npm:0.2.12"
-  checksum: 9bc15041ac9819bfdf15cf068c6e440304b9bf65e65d0ab00169fd09f50581d077f6b32bf311be19019c75eb9aada411759ca763ac4c695365e18286fa0b1043
-  languageName: node
-  linkType: hard
-
 "@big-whale-labs/constants@npm:^0.1.85":
   version: 0.1.85
   resolution: "@big-whale-labs/constants@npm:0.1.85"
@@ -951,6 +944,20 @@ __metadata:
   version: 0.2.4
   resolution: "@big-whale-labs/constants@npm:0.2.4"
   checksum: c3a6e1e6a9014ef022abe74a792874b2a1351f6d77ad39404c4ab570d3ef7270fc9a5a75c7b19a4f04017237949a79d95596e789354448a65e9c53f1056572a6
+  languageName: node
+  linkType: hard
+
+"@big-whale-labs/constants@npm:^0.2.10":
+  version: 0.2.12
+  resolution: "@big-whale-labs/constants@npm:0.2.12"
+  checksum: 9bc15041ac9819bfdf15cf068c6e440304b9bf65e65d0ab00169fd09f50581d077f6b32bf311be19019c75eb9aada411759ca763ac4c695365e18286fa0b1043
+  languageName: node
+  linkType: hard
+
+"@big-whale-labs/constants@npm:^0.2.19":
+  version: 0.2.19
+  resolution: "@big-whale-labs/constants@npm:0.2.19"
+  checksum: 56d11c407a9b69fdc4d0694d63378c82e6df53bded24206e214b123c819fcfe9d3e1eee9492d9d881b72ddfa0040aa69b00bf7d46060c65811cc764a08794dcb
   languageName: node
   linkType: hard
 
@@ -5878,7 +5885,7 @@ __metadata:
   dependencies:
     "@big-whale-labs/backend-utils": ^0.0.22
     "@big-whale-labs/bwl-eslint-backend": ^1.0.3
-    "@big-whale-labs/constants": 0.2.12
+    "@big-whale-labs/constants": ^0.2.19
     "@big-whale-labs/ketl-attestation-token": 0.1.0
     "@big-whale-labs/obss-storage-contract": ^1.0.2
     "@big-whale-labs/prettier-config": ^1.1.3
