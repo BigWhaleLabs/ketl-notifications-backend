@@ -1,6 +1,9 @@
-import { IsBoolean } from 'amala'
+import { IsBoolean, IsNotEmpty, IsString } from 'amala'
 
 export default class {
+  @IsString()
+  @IsNotEmpty()
+  token!: string
   @IsBoolean()
   allPostsEnabled!: boolean
   @IsBoolean()

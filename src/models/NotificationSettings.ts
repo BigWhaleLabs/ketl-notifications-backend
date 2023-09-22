@@ -2,6 +2,12 @@ import { Ref, getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
 import { Token, TokenModel } from '@/models/Token'
 import notificationTokenRegex from '@/helpers/regexes'
 
+interface Settings {
+  allPostsEnabled: boolean
+  hotPostsEnabled: boolean
+  repliesEnabled: boolean
+}
+
 @modelOptions({ schemaOptions: { timestamps: true } })
 export class NotificationSettings {
   @prop({ ref: () => Token })
@@ -22,44 +28,13 @@ export function findSettingsByToken(token: Token) {
   ])
 }
 
-export async function findOneOrCreate(token: Token) {
-  const notificationSettings = await findSettingsByToken(token)
-
-  if (notificationSettings) return notificationSettings
-
-  // TODO: make sure it returns properly
-  return (await NotificationsSettingsModel.create({ token })).populate([
-    'repliesEnabled',
-    'hotPostsEnabled',
-    'allPostsEnabled',
-  ])
-}
-
 export async function createOrUpdateSettings(
-  token: Token,
-  {
-    allPostsEnabled,
-    hotPostsEnabled,
-    repliesEnabled,
-  }: {
-    allPostsEnabled: boolean
-    hotPostsEnabled: boolean
-    repliesEnabled: boolean
-  }
+  token: string,
+  newSettings: Settings
 ) {
-  await NotificationsSettingsModel.updateOne(
-    { token },
-    {
-      allPostsEnabled,
-      hotPostsEnabled,
-      repliesEnabled,
-    },
-    { upsert: true }
-  )
-}
-
-export async function deleteSettings(token: Token) {
-  await NotificationsSettingsModel.deleteOne({ token })
+  await NotificationsSettingsModel.updateOne({ token }, newSettings, {
+    upsert: true,
+  })
 }
 
 export async function excludeTokensWithParams(

@@ -29,9 +29,7 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      const previousToken = await TokenModel.findOne({
-        token: oldToken,
-      })
+      const previousToken = await TokenModel.findOne({ token: oldToken })
       if (!previousToken) return ctx.throw(badRequest("Can't find the token"))
 
       previousToken.token = body.token
