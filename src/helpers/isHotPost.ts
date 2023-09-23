@@ -1,3 +1,10 @@
+import {
+  minimumLikes,
+  minimumNumberOfComments,
+  minimumParticipants,
+  minimumViews,
+  relevancePeriod,
+} from '@/data/hotPost'
 import axios from 'axios'
 import env from '@/helpers/env'
 import getFeedsContract from '@/helpers/getFeedsContract'
@@ -23,10 +30,9 @@ async function getNumberOfLikes(feedId: number, postId: number) {
   return likes.toNumber()
 }
 
-const week = 1000 * 60 * 60 * 24 * 7
 async function isOldPost(feedId: number, postId: number) {
   const post = await getFeedsContract.posts(feedId, postId)
-  return Date.now() - post.timestamp.toNumber() * 1000 > week
+  return Date.now() - post.timestamp.toNumber() * 1000 > relevancePeriod
 }
 
 const viewsEndpoint = `${env.KETL_VIEWS_BACKEND}/views`
@@ -50,15 +56,15 @@ export default async function isHotPost(feedId: number, postId: number) {
 
   const participants = await getParticipants(feedId, postId)
 
-  if (participants < 3) return false
+  if (participants < minimumParticipants) return false
 
   const numberOfComments = await getNumberOfComments(feedId, postId)
-  if (numberOfComments < 7) return false
+  if (numberOfComments < minimumNumberOfComments) return false
 
   const likes = await getNumberOfLikes(feedId, postId)
-  if (likes < 10) return false
+  if (likes < minimumLikes) return false
 
   const views = await getViews(feedId, postId)
 
-  return views >= 25
+  return views >= minimumViews
 }
