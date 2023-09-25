@@ -1,4 +1,5 @@
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
+import NotificationSettings from '@/models/NotificationSettings'
 import notificationTokenRegex from '@/helpers/regexes'
 
 @modelOptions({ schemaOptions: { timestamps: true } })
@@ -15,12 +16,6 @@ export class TokenWithSettings {
   expired!: boolean
 }
 
-interface Settings {
-  allPostsEnabled?: boolean
-  hotPostsEnabled?: boolean
-  repliesEnabled?: boolean
-}
-
 export function findSettingsByToken(token: string) {
   return TokenModel.findOne({ token }).select([
     '-_id',
@@ -33,7 +28,7 @@ export function findSettingsByToken(token: string) {
 
 export async function updateTokenWithSettings(
   token: string,
-  newSettings: Settings
+  newSettings: NotificationSettings
 ) {
   await TokenModel.updateOne({ token }, newSettings, { upsert: true })
 }
