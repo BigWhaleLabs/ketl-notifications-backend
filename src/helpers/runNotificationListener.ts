@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
-import { excludeTokensWithParams } from '@/models/TokenWithSettings'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
-import { rootFeeds } from '@/helpers/feedsData'
+import { getTokens } from '@/models/TokenWithSettings'
+import feedsData from '@/helpers/feedsData'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
@@ -11,7 +11,7 @@ import structToCid from '@/helpers/structToCid'
 
 ketlAttestationContract.on('EntanglementRegistered', async () => {
   try {
-    const tokens = await excludeTokensWithParams()
+    const tokens = await getTokens()
     await sendFirebaseNotification({
       entanglement: true,
       tokens,
@@ -23,7 +23,7 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
 
 getFeedsContract.on('CommentAdded', async () => {
   try {
-    const tokens = await excludeTokensWithParams({ repliesEnabled: false })
+    const tokens = await getTokens({ repliesEnabled: false })
     await sendFirebaseNotification({ tokens })
   } catch (err) {
     console.error(err)
@@ -39,13 +39,13 @@ getFeedsContract.on(
   ) => {
     try {
       const numberFeedId = feedId.toNumber()
-      const feedName = rootFeeds[numberFeedId]
+      const feedName = feedsData[numberFeedId]
       if (!feedName) return
       const title = `@${generateRandomName(author)} posted at ${feedName}`
       if (!title) return
       const body = await getIPFSContent(structToCid(metadata))
 
-      const tokens = await excludeTokensWithParams({ allPostsEnabled: false })
+      const tokens = await getTokens({ allPostsEnabled: false })
 
       await sendFirebaseNotification({
         body,
