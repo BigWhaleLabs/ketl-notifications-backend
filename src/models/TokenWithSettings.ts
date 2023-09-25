@@ -11,6 +11,8 @@ export class TokenWithSettings {
   hotPostsEnabled!: boolean
   @prop({ default: true })
   repliesEnabled!: boolean
+  @prop({ default: false })
+  expired!: boolean
 }
 
 interface Settings {
@@ -36,18 +38,13 @@ export async function updateTokenWithSettings(
   await TokenModel.updateOne({ token }, newSettings, { upsert: true })
 }
 
-export async function excludeTokensWithParams(
-  params?: Partial<TokenWithSettings>
-) {
+export async function getTokens(params?: Partial<TokenWithSettings>) {
   const tokens = await TokenModel.find({
-    token: { $not: { $regex: notificationTokenRegex } },
+    ...params,
+    expired: false,
+    token: { $regex: notificationTokenRegex },
   })
-  if (!params) return tokens.map(({ token }) => token.toString())
-  const settings = await TokenModel.find(params)
-  const tokenSet = new Set(settings.map(({ token }) => token?.toString()))
-  return tokens
-    .filter(({ _id }) => !tokenSet.has(_id.toString()))
-    .map(({ token }) => token.toString())
+  return tokens.map(({ token }) => token.toString())
 }
 
 export const TokenModel = getModelForClass(TokenWithSettings)
