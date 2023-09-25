@@ -30,9 +30,9 @@ export default class TokenController {
     }
   }
 
-  @Put('/:token')
+  @Put('/:oldToken')
   async replaceToken(
-    @Params('token') oldToken: string,
+    @Params('oldToken') oldToken: string,
     @Body({ required: true }) body: TokenWithSettings,
     @Ctx() ctx: Context
   ) {
