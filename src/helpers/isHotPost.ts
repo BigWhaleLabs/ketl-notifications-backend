@@ -26,7 +26,7 @@ async function getNumberOfComments(feedId: number, postId: number) {
 }
 
 async function getNumberOfLikes(feedId: number, postId: number) {
-  const [_, likes] = await getFeedsContract.getReactions(feedId, postId, 0)
+  const [, likes] = await getFeedsContract.getReactions(feedId, postId, 0)
   return likes.toNumber()
 }
 
