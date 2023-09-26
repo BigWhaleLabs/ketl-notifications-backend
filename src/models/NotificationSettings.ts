@@ -3,3 +3,9 @@ export default interface NotificationSettings {
   hotPostsEnabled?: boolean
   repliesEnabled?: boolean
 }
+
+export const allDisabledNotificationSettings = {
+  allPostsEnabled: false,
+  hotPostsEnabled: false,
+  repliesEnabled: false,
+}

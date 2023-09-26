@@ -5,6 +5,7 @@ import {
   findSettingsByToken,
   updateTokenWithSettings,
 } from '@/models/TokenWithSettings'
+import { allDisabledNotificationSettings } from '@/models/NotificationSettings'
 import { badRequest, internal } from '@hapi/boom'
 import TokenWithSettings from '@/validators/TokenWithSettings'
 
@@ -55,7 +56,7 @@ export default class TokenController {
   async getSettings(@Params('token') token: string, @Ctx() ctx: Context) {
     try {
       const result = await findSettingsByToken(token)
-      if (!result?.token) throw "Can't find user data"
+      if (!result) return allDisabledNotificationSettings
       return result
     } catch (e) {
       console.error(e)
