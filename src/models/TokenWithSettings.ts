@@ -1,6 +1,5 @@
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
 import NotificationSettings from '@/models/NotificationSettings'
-import notificationTokenRegex from '@/helpers/regexes'
 
 @modelOptions({ schemaOptions: { timestamps: true } })
 export class TokenWithSettings {
@@ -37,7 +36,6 @@ export async function getTokens(params?: Partial<TokenWithSettings>) {
   const tokens = await TokenModel.find({
     ...params,
     expired: false,
-    token: { $regex: notificationTokenRegex },
   })
   return tokens.map(({ token }) => token.toString())
 }
