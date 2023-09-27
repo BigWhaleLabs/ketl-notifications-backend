@@ -23,7 +23,7 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
 
 getFeedsContract.on('CommentAdded', async () => {
   try {
-    const tokens = await getTokens({ repliesEnabled: false })
+    const tokens = await getTokens({ repliesEnabled: true })
     await sendFirebaseNotification({ tokens })
   } catch (err) {
     console.error(err)
@@ -45,8 +45,7 @@ getFeedsContract.on(
       if (!title) return
       const body = await getIPFSContent(structToCid(metadata))
 
-      const tokens = await getTokens({ allPostsEnabled: false })
-
+      const tokens = await getTokens({ allPostsEnabled: true })
       await sendFirebaseNotification({
         body,
         feedId: numberFeedId,
