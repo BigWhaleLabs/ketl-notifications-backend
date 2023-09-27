@@ -17,7 +17,6 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      console.log('addToken', body)
       const { allPostsEnabled, hotPostsEnabled, repliesEnabled, token } = body
       await updateTokenWithSettings(token, {
         allPostsEnabled,
@@ -39,7 +38,6 @@ export default class TokenController {
     @Ctx() ctx: Context
   ) {
     try {
-      console.log('oldToken', oldToken, body)
       const previousData = await TokenModel.findOne({ token: oldToken })
       if (!previousData?.token)
         return ctx.throw(badRequest("Can't find the token"))
