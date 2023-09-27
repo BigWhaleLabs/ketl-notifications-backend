@@ -83,7 +83,10 @@ export default async function ({
         }
         console.error(errorCode, response.error)
       })
-      await TokenModel.deleteMany({ token: { $in: tokensToDelete } })
+      await TokenModel.updateMany(
+        { token: { $in: tokensToDelete } },
+        { expired: true }
+      )
     } catch (err) {
       console.error(err)
     }

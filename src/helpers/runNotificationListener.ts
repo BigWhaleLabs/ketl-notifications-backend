@@ -1,29 +1,17 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
-import env from '@/helpers/env'
-import getAllValidTokens from '@/helpers/getAllValidTokens'
+import { getTokens } from '@/models/Token'
+import feedsData from '@/helpers/feedsData'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
-const prodFeeds = {
-  1: 't/startups',
-  2: 't/ketlTeam',
-}
-
-const rootFeeds: { [key: number]: string } = env.isProduction
-  ? prodFeeds
-  : {
-      0: 't/devFeed',
-      ...prodFeeds,
-    }
-
 ketlAttestationContract.on('EntanglementRegistered', async () => {
-  const tokens = await getAllValidTokens()
   try {
+    const tokens = await getTokens()
     await sendFirebaseNotification({
       entanglement: true,
       tokens,
@@ -34,11 +22,9 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
 })
 
 getFeedsContract.on('CommentAdded', async () => {
-  const tokens = await getAllValidTokens()
   try {
-    await sendFirebaseNotification({
-      tokens,
-    })
+    const tokens = await getTokens({ repliesEnabled: true })
+    await sendFirebaseNotification({ tokens })
   } catch (err) {
     console.error(err)
   }
@@ -51,16 +37,18 @@ getFeedsContract.on(
     postId: BigNumber,
     [author, metadata]: PostStructOutput
   ) => {
-    const feed = rootFeeds[feedId.toNumber()]
-    const title = feed && `@${generateRandomName(author)} posted at ${feed}`
-    if (!title) return
-    const body = feed && (await getIPFSContent(structToCid(metadata)))
-
-    const tokens = await getAllValidTokens()
     try {
+      const numberFeedId = feedId.toNumber()
+      const feedName = feedsData[numberFeedId]
+      if (!feedName) return
+      const title = `@${generateRandomName(author)} posted at ${feedName}`
+      if (!title) return
+      const body = await getIPFSContent(structToCid(metadata))
+
+      const tokens = await getTokens({ allPostsEnabled: true })
       await sendFirebaseNotification({
         body,
-        feedId: feedId.toNumber(),
+        feedId: numberFeedId,
         postId: postId.toNumber(),
         title,
         tokens,
