@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
-import { getTokens } from '@/models/TokenWithSettings'
+import { getTokens } from '@/models/Token'
 import feedsData from '@/helpers/feedsData'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'

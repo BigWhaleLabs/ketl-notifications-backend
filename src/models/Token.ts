@@ -2,7 +2,7 @@ import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
 import NotificationSettings from '@/models/NotificationSettings'
 
 @modelOptions({ schemaOptions: { timestamps: true } })
-export class TokenWithSettings {
+export class Token {
   @prop({ index: true, unique: true })
   token!: string
   @prop({ default: true })
@@ -32,7 +32,7 @@ export async function updateTokenWithSettings(
   await TokenModel.updateOne({ token }, newSettings, { upsert: true })
 }
 
-export async function getTokens(params?: Partial<TokenWithSettings>) {
+export async function getTokens(params?: Partial<Token>) {
   const tokens = await TokenModel.find({
     ...params,
     expired: false,
@@ -40,4 +40,4 @@ export async function getTokens(params?: Partial<TokenWithSettings>) {
   return tokens.map(({ token }) => token.toString())
 }
 
-export const TokenModel = getModelForClass(TokenWithSettings)
+export const TokenModel = getModelForClass(Token)

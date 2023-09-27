@@ -4,7 +4,7 @@ import {
   TokenModel,
   findSettingsByToken,
   updateTokenWithSettings,
-} from '@/models/TokenWithSettings'
+} from '@/models/Token'
 import { allDisabledNotificationSettings } from '@/models/NotificationSettings'
 import { badRequest, internal } from '@hapi/boom'
 import TokenWithSettings from '@/validators/TokenWithSettings'
