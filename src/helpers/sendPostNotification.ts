@@ -1,6 +1,6 @@
 import { CIDStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
-import { rootFeeds } from '@/helpers/feedsData'
+import feedsData from '@/helpers/feedsData'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
@@ -19,7 +19,7 @@ export default async function sendPostNotification(
   author: string,
   metadata: CIDStructOutput
 ) {
-  const feedName = rootFeeds[feedId]
+  const feedName = feedsData[feedId]
   if (!feedName) return
   const authorUsername = generateRandomName(author)
   const title = makeTitle({ author: authorUsername, feedName })

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
-import { getTokens } from '@/models/TokenWithSettings'
+import { getTokens } from '@/models/Token'
 import { minimumNumberOfComments } from '@/data/hotPost'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import isHotPost from '@/helpers/isHotPost'
