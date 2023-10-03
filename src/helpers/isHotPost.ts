@@ -5,16 +5,20 @@ import {
   minimumViews,
   relevancePeriod,
 } from '@/data/hotPost'
-import axios from 'axios'
-import env from '@/helpers/env'
 import getFeedsContract from '@/helpers/getFeedsContract'
+import getViews from '@/helpers/postViews'
 
-async function getParticipants(feedId: number, postId: number) {
+async function getParticipants(
+  feedId: number,
+  postId: number,
+  skip = 1,
+  pinned = false
+) {
   const [{ participants }] = await getFeedsContract.getPostsAndParticipants(
     feedId,
     postId,
-    1,
-    false
+    skip,
+    pinned
   )
 
   return participants.length
@@ -33,21 +37,6 @@ async function getNumberOfLikes(feedId: number, postId: number) {
 async function isOldPost(feedId: number, postId: number) {
   const post = await getFeedsContract.posts(feedId, postId)
   return Date.now() - post.timestamp.toNumber() * 1000 > relevancePeriod
-}
-
-const viewsEndpoint = `${env.KETL_VIEWS_BACKEND}/views`
-
-export async function getViews(feedId: number, postId: number) {
-  const searchQuery = new URLSearchParams({
-    feedId: String(feedId),
-    postId: String(postId),
-  })
-
-  const {
-    data: { views },
-  } = await axios.get(`${viewsEndpoint}?${searchQuery}`)
-
-  return views
 }
 
 export default async function isHotPost(feedId: number, postId: number) {
