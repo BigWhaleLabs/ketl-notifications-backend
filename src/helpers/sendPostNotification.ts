@@ -9,11 +9,26 @@ export default async function sendPostNotification(
   tokens: string[],
   makeTitle: ({
     author,
+    extraText,
     feedName,
+    text,
   }: {
     author: string
     feedName: string
-  }) => string,
+    text?: string
+    extraText?: string
+  }) => string | undefined,
+  makeBody: ({
+    author,
+    extraText,
+    feedName,
+    text,
+  }: {
+    author: string
+    feedName: string
+    text?: string
+    extraText?: string
+  }) => string | undefined,
   feedId: number,
   postId: number,
   author: string,
@@ -22,9 +37,10 @@ export default async function sendPostNotification(
   const feedName = feedsData[feedId]
   if (!feedName) return
   const authorUsername = generateRandomName(author)
-  const title = makeTitle({ author: authorUsername, feedName })
+  const content = await getIPFSContent(structToCid(metadata))
+  const title = makeTitle({ author: authorUsername, feedName, ...content })
   if (!title) return
-  const body = await getIPFSContent(structToCid(metadata))
+  const body = makeBody({ author: authorUsername, feedName, ...content })
 
   await sendFirebaseNotification({
     body,

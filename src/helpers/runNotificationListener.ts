@@ -39,7 +39,8 @@ getFeedsContract.on(
 
       await sendPostNotification(
         hotPostTokens,
-        ({ author, feedName }) => `🔥 Hot post by @${author} at ${feedName}`,
+        ({ text }) => `🔥 trending now: ${text}`,
+        ({ extraText }) => extraText,
         numberFeedId,
         numberPostId,
         post.author,
@@ -66,6 +67,7 @@ getFeedsContract.on(
       await sendPostNotification(
         tokens,
         ({ author, feedName }) => `@${author} posted at ${feedName}`,
+        ({ text }) => text,
         numberFeedId,
         numberPostId,
         author,
