@@ -3,22 +3,24 @@ import {
   minimumNumberOfComments,
   minimumParticipants,
   minimumViews,
-  relevancePeriod,
+  oneWeek,
 } from '@/data/hotPost'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getViews from '@/helpers/postViews'
+
+interface GetParticipantsProps {
+  feedId: number
+  postId: number
+  skip?: number
+  pinned?: boolean
+}
 
 async function getParticipants({
   feedId,
   pinned = false,
   postId,
   skip = 1,
-}: {
-  feedId: number
-  postId: number
-  skip?: number
-  pinned?: boolean
-}) {
+}: GetParticipantsProps) {
   const [{ participants }] = await getFeedsContract.getPostsAndParticipants(
     feedId,
     postId,
@@ -45,7 +47,7 @@ async function getNumberOfLikes(feedId: number, postId: number) {
 
 async function isOldPost(feedId: number, postId: number) {
   const post = await getFeedsContract.posts(feedId, postId)
-  return Date.now() - post.timestamp.toNumber() * 1000 > relevancePeriod
+  return Date.now() - post.timestamp.toNumber() * 1000 > oneWeek
 }
 
 export default async function isHotPost(feedId: number, postId: number) {
