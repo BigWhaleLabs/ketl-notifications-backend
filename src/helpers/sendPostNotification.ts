@@ -1,5 +1,6 @@
 import { CIDStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
+import TextProps from '@/models/TextProps'
 import feedsData from '@/helpers/feedsData'
 import getIPFSContent from '@/helpers/getIPFSContent'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
@@ -12,23 +13,13 @@ export default async function sendPostNotification(
     extraText,
     feedName,
     text,
-  }: {
-    author: string
-    feedName: string
-    text?: string
-    extraText?: string
-  }) => string | undefined,
+  }: TextProps) => string | undefined,
   makeBody: ({
     author,
     extraText,
     feedName,
     text,
-  }: {
-    author: string
-    feedName: string
-    text?: string
-    extraText?: string
-  }) => string | undefined,
+  }: TextProps) => string | undefined,
   feedId: number,
   postId: number,
   author: string,
@@ -38,9 +29,9 @@ export default async function sendPostNotification(
   if (!feedName) return
   const authorUsername = generateRandomName(author)
   const content = await getIPFSContent(structToCid(metadata))
-  const title = makeTitle({ author: authorUsername, feedName, ...content })
+  const title = makeTitle({ ...content, author: authorUsername, feedName })
   if (!title) return
-  const body = makeBody({ author: authorUsername, feedName, ...content })
+  const body = makeBody({ ...content, author: authorUsername, feedName })
 
   await sendFirebaseNotification({
     body,
