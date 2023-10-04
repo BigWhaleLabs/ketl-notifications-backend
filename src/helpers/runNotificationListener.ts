@@ -2,6 +2,7 @@ import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { getTokens } from '@/models/Token'
 import { minimumNumberOfComments } from '@/data/hotPost'
+import checkAndSendHotPost from 'src/helpers/sendHotPost'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import isHotPost from '@/helpers/isHotPost'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
@@ -31,21 +32,7 @@ getFeedsContract.on(
       const numberFeedId = feedId.toNumber()
       const numberPostId = postId.toNumber()
 
-      const isHot = await isHotPost(numberFeedId, numberPostId)
-      if (!isHot) return
-
-      const post = await getFeedsContract.posts(numberFeedId, numberPostId)
-      const hotPostTokens = await getTokens({ hotPostsEnabled: true })
-
-      await sendPostNotification(
-        hotPostTokens,
-        ({ text }) => `🔥 trending now: ${text}`,
-        ({ extraText }) => extraText,
-        numberFeedId,
-        numberPostId,
-        post.author,
-        post.metadata
-      )
+      await checkAndSendHotPost(numberFeedId, numberPostId)
     } catch (err) {
       console.error(err)
     }
