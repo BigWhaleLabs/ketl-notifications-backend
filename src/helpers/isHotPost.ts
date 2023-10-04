@@ -8,12 +8,17 @@ import {
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getViews from '@/helpers/postViews'
 
-async function getParticipants(
-  feedId: number,
-  postId: number,
+async function getParticipants({
+  feedId,
+  pinned = false,
+  postId,
   skip = 1,
-  pinned = false
-) {
+}: {
+  feedId: number
+  postId: number
+  skip?: number
+  pinned?: boolean
+}) {
   const [{ participants }] = await getFeedsContract.getPostsAndParticipants(
     feedId,
     postId,
@@ -30,8 +35,12 @@ async function getNumberOfComments(feedId: number, postId: number) {
 }
 
 async function getNumberOfLikes(feedId: number, postId: number) {
-  const [, likes] = await getFeedsContract.getReactions(feedId, postId, 0)
-  return likes.toNumber()
+  const [downVotes, upVotes] = await getFeedsContract.getReactions(
+    feedId,
+    postId,
+    0
+  )
+  return upVotes.toNumber() + downVotes.toNumber()
 }
 
 async function isOldPost(feedId: number, postId: number) {
@@ -43,7 +52,7 @@ export default async function isHotPost(feedId: number, postId: number) {
   const isOld = await isOldPost(feedId, postId)
   if (isOld) return false
 
-  const participants = await getParticipants(feedId, postId)
+  const participants = await getParticipants({ feedId, postId })
 
   if (participants < minimumParticipants) return false
 
