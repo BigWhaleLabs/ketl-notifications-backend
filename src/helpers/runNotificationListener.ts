@@ -3,17 +3,19 @@ import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typ
 import { getTokens } from '@/models/Token'
 import { minimumNumberOfComments } from '@/data/hotPost'
 import checkAndSendHotPost from '@/helpers/sendHotPost'
+import feedsData from '@/helpers/feedsData'
 import getFeedsContract from '@/helpers/getFeedsContract'
+import getIPFSContent from '@/helpers/getIPFSContent'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
-import sendPostNotification from '@/helpers/sendPostNotification'
+import structToCid from '@/helpers/structToCid'
 
 ketlAttestationContract.on('EntanglementRegistered', async () => {
   try {
     const tokens = await getTokens()
     await sendFirebaseNotification({
-      entanglement: true,
       tokens,
+      type: 'entanglement',
     })
   } catch (err) {
     console.error(err)
@@ -32,8 +34,8 @@ getFeedsContract.on(
       const numberPostId = postId.toNumber()
 
       await checkAndSendHotPost(numberFeedId, numberPostId)
-    } catch (err) {
-      console.error(err)
+    } catch (e) {
+      console.error(e)
     }
   }
 )
@@ -49,18 +51,28 @@ getFeedsContract.on(
       const numberFeedId = feedId.toNumber()
       const numberPostId = postId.toNumber()
 
+      const feedName = feedsData[numberFeedId]
+      if (!feedName) {
+        console.error('Feed not fount')
+        return
+      }
+      const content = await getIPFSContent(structToCid(metadata))
+      if (!content || !content.text) {
+        console.error('Post data is empty')
+        return
+      }
+
       const tokens = await getTokens({ allPostsEnabled: true })
-      await sendPostNotification(
+
+      await sendFirebaseNotification({
+        body: content.text,
+        feedId: numberFeedId,
+        postId: numberPostId,
+        title: `@${author} posted at ${feedName}`,
         tokens,
-        ({ author, feedName }) => `@${author} posted at ${feedName}`,
-        ({ text }) => text,
-        numberFeedId,
-        numberPostId,
-        author,
-        metadata
-      )
-    } catch (err) {
-      console.error(err)
+      })
+    } catch (e) {
+      console.error(e)
     }
   }
 )

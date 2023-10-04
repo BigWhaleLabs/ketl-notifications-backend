@@ -1,4 +1,4 @@
-export default interface TextProps {
+export default interface NotificationText {
   author: string
   feedName: string
   text?: string
