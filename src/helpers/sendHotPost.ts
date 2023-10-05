@@ -8,7 +8,7 @@ import structToCid from '@/helpers/structToCid'
 
 async function isSendedHotPost(feedId: number, postId: number) {
   const sendedDate = await getItem(`hot-post-${feedId}-${postId}`)
-  return sendedDate != undefined
+  return sendedDate !== undefined
 }
 
 export default async function checkAndSendHotPost(
