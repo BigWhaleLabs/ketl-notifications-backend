@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
+import { generateRandomName } from '@big-whale-labs/backend-utils'
 import { getTokens } from '@/models/Token'
 import { minimumNumberOfComments } from '@/data/hotPost'
 import checkAndSendHotPost from '@/helpers/sendHotPost'
@@ -62,13 +63,14 @@ getFeedsContract.on(
         return
       }
 
+      const authorUsername = generateRandomName(author)
       const tokens = await getTokens({ allPostsEnabled: true })
 
       await sendFirebaseNotification({
         body: content.text,
         feedId: numberFeedId,
         postId: numberPostId,
-        title: `@${author} posted at ${feedName}`,
+        title: `@${authorUsername} posted at ${feedName}`,
         tokens,
       })
     } catch (e) {
