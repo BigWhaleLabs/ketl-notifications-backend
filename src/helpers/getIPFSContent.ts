@@ -5,6 +5,8 @@ export default async function (cid?: string) {
   if (!cid) return
   const ipfsBaseUrl = env.IPFS_GATEWAY
   const ipfsUrlString = `${ipfsBaseUrl}/${cid}`
-  const ipfsContent = (await axios.get<{ text?: string }>(ipfsUrlString)).data
-  return ipfsContent?.text
+  const { data } = await axios.get<{ text?: string; extraText?: string }>(
+    ipfsUrlString
+  )
+  return data
 }

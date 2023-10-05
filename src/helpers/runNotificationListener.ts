@@ -2,6 +2,8 @@ import { BigNumber } from 'ethers'
 import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
 import { getTokens } from '@/models/Token'
+import { minimumNumberOfComments } from '@/data/hotPost'
+import checkAndSendHotPost from '@/helpers/sendHotPost'
 import feedsData from '@/helpers/feedsData'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
@@ -13,22 +15,31 @@ ketlAttestationContract.on('EntanglementRegistered', async () => {
   try {
     const tokens = await getTokens()
     await sendFirebaseNotification({
-      entanglement: true,
       tokens,
+      type: 'entanglement',
     })
   } catch (err) {
     console.error(err)
   }
 })
 
-getFeedsContract.on('CommentAdded', async () => {
-  try {
-    const tokens = await getTokens({ repliesEnabled: true })
-    await sendFirebaseNotification({ tokens })
-  } catch (err) {
-    console.error(err)
+getFeedsContract.on(
+  'CommentAdded',
+  async (feedId: BigNumber, postId: BigNumber, commentId: BigNumber) => {
+    try {
+      const tokens = await getTokens({ repliesEnabled: true })
+      await sendFirebaseNotification({ tokens })
+
+      if (commentId.toNumber() !== minimumNumberOfComments) return
+      const numberFeedId = feedId.toNumber()
+      const numberPostId = postId.toNumber()
+
+      await checkAndSendHotPost(numberFeedId, numberPostId)
+    } catch (e) {
+      console.error(e)
+    }
   }
-})
+)
 
 getFeedsContract.on(
   'PostAdded',
@@ -39,22 +50,31 @@ getFeedsContract.on(
   ) => {
     try {
       const numberFeedId = feedId.toNumber()
-      const feedName = feedsData[numberFeedId]
-      if (!feedName) return
-      const title = `@${generateRandomName(author)} posted at ${feedName}`
-      if (!title) return
-      const body = await getIPFSContent(structToCid(metadata))
+      const numberPostId = postId.toNumber()
 
+      const feedName = feedsData[numberFeedId]
+      if (!feedName) {
+        console.error('Feed not fount')
+        return
+      }
+      const content = await getIPFSContent(structToCid(metadata))
+      if (!content || !content.text) {
+        console.error('Post data is empty')
+        return
+      }
+
+      const authorUsername = generateRandomName(author)
       const tokens = await getTokens({ allPostsEnabled: true })
+
       await sendFirebaseNotification({
-        body,
+        body: content.text,
         feedId: numberFeedId,
-        postId: postId.toNumber(),
-        title,
+        postId: numberPostId,
+        title: `@${authorUsername} posted at ${feedName}`,
         tokens,
       })
-    } catch (err) {
-      console.error(err)
+    } catch (e) {
+      console.error(e)
     }
   }
 )
