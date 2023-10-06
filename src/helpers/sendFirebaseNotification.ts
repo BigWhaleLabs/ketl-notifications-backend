@@ -21,13 +21,13 @@ export default async function ({
   feedId?: number
   entanglement?: boolean
 }) {
+  const uniqueTokens = Array.from(new Set(tokens))
   console.log(
     entanglement
-      ? `Entanglement notifications. Number of tokens: ${tokens.length}`
-      : `Post notifications. Number of tokens: ${tokens.length}, PostId: ${postId}, FeedId: ${feedId}`
+      ? `Entanglement notifications. Number of tokens: ${uniqueTokens.length}`
+      : `Post notifications. Number of tokens: ${uniqueTokens.length}, PostId: ${postId}, FeedId: ${feedId}`
   )
-  const uniqueTokens = new Set(tokens)
-  const tokenChunks = chunk(Array.from(uniqueTokens), 499)
+  const tokenChunks = chunk(uniqueTokens, 499)
 
   // Send multicast messages for each chunk
   for (const chunk of tokenChunks) {
