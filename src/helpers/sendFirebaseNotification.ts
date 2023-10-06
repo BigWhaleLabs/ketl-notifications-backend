@@ -26,7 +26,8 @@ export default async function ({
       ? `Entanglement notifications. Number of tokens: ${tokens.length}`
       : `Post notifications. Number of tokens: ${tokens.length}, PostId: ${postId}, FeedId: ${feedId}`
   )
-  const tokenChunks = chunk(tokens, 499)
+  const uniqueTokens = new Set(tokens)
+  const tokenChunks = chunk(Array.from(uniqueTokens), 499)
 
   // Send multicast messages for each chunk
   for (const chunk of tokenChunks) {
