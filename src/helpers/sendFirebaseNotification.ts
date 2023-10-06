@@ -23,12 +23,13 @@ export default async function ({
   tokens,
   type = 'newpost',
 }: FirebaseNotificationProps) {
+  const uniqueTokens = Array.from(new Set(tokens))
   console.log(
     type === 'entanglement'
       ? `Entanglement notifications. Number of tokens: ${tokens.length}`
       : `Post notifications. Number of tokens: ${tokens.length}, PostId: ${postId}, FeedId: ${feedId}`
   )
-  const tokenChunks = chunk(tokens, 499)
+  const tokenChunks = chunk(uniqueTokens, 499)
 
   // Send multicast messages for each chunk
   for (const chunk of tokenChunks) {
