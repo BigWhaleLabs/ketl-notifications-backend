@@ -27,5 +27,6 @@ And you should be good to go! Feel free to fork and submit pull requests.
 | `NODE_ENV`            | ENV of the project. Could be "development", "production" or "test" |
 | `IPFS_GATEWAY`        | IPFS gateway for resolving content                                 |
 | `HEALTHCHECK_WEBHOOK` | Webhook for healthcheck                                            |
+| `KETL_VIEWS_BACKEND`  | Backend, that counts post views                                    |
 
 Also, please, consider looking at `.env.sample`.

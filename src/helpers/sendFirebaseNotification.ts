@@ -6,26 +6,28 @@ import firebase from '@/helpers/firebase'
 
 const messaging = getMessaging(firebase)
 
-export default async function ({
-  body,
-  entanglement,
-  feedId,
-  postId,
-  title,
-  tokens,
-}: {
+interface FirebaseNotificationProps {
   tokens: string[]
   title?: string
   body?: string
   postId?: number
   feedId?: number
-  entanglement?: boolean
-}) {
+  type?: 'entanglement' | 'newpost'
+}
+
+export default async function ({
+  body,
+  feedId,
+  postId,
+  title,
+  tokens,
+  type = 'newpost',
+}: FirebaseNotificationProps) {
   const uniqueTokens = Array.from(new Set(tokens))
   console.log(
-    entanglement
-      ? `Entanglement notifications. Number of tokens: ${uniqueTokens.length}`
-      : `Post notifications. Number of tokens: ${uniqueTokens.length}, PostId: ${postId}, FeedId: ${feedId}`
+    type === 'entanglement'
+      ? `Entanglement notifications. Number of tokens: ${tokens.length}`
+      : `Post notifications. Number of tokens: ${tokens.length}, PostId: ${postId}, FeedId: ${feedId}`
   )
   const tokenChunks = chunk(uniqueTokens, 499)
 
@@ -38,7 +40,7 @@ export default async function ({
       data: {
         feedId: feedId ? String(feedId) : '',
         postId: postId ? String(postId) : '',
-        type: entanglement ? 'entanglement' : 'newpost',
+        type,
       },
       tokens: chunk.filter((token) => !!token),
     } as MulticastMessage
@@ -88,8 +90,8 @@ export default async function ({
         { token: { $in: tokensToDelete } },
         { expired: true }
       )
-    } catch (err) {
-      console.error(err)
+    } catch (e) {
+      console.error(e)
     }
   }
 }
