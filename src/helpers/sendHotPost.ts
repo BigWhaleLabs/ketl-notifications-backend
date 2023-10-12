@@ -6,7 +6,7 @@ import isHotPost from '@/helpers/isHotPost'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
-async function isSendedHotPost(feedId: number, postId: number) {
+async function didSendHotPostHotPost(feedId: number, postId: number) {
   const sendedDate = await getItem(`hot-post-${feedId}-${postId}`)
   return sendedDate !== undefined
 }
@@ -15,7 +15,7 @@ export default async function checkAndSendHotPost(
   feedId: number,
   postId: number
 ) {
-  if (await isSendedHotPost(feedId, postId)) return
+  if (await didSendHotPostHotPost(feedId, postId)) return
 
   const isHot = await isHotPost(feedId, postId)
   if (!isHot) return
