@@ -7,7 +7,7 @@ import getIPFSContent from '@/helpers/getIPFSContent'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
-async function isSendedHotPost(feedId: number, postId: number) {
+async function didSendPost(feedId: number, postId: number) {
   const sendedDate = await getItem(`post-${feedId}-${postId}`)
   return sendedDate !== undefined
 }
@@ -17,7 +17,7 @@ export default async function sendPost(
   postId: number,
   [author, metadata]: PostStructOutput
 ) {
-  if (await isSendedHotPost(feedId, postId)) return
+  if (await didSendPost(feedId, postId)) return
 
   const feedName = feedsData[feedId]
   if (!feedName) {
