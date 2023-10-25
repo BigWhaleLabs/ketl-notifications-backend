@@ -32,12 +32,8 @@ export default class TokenController {
   }
 
   @Post('/waitlist')
-  async addWaitlistToken(
-    @Body({ required: true }) body: TokenWithSettings,
-    @Ctx() ctx: Context
-  ) {
+  async addWaitlistToken(@Body({ required: true }) body: TokenWithSettings) {
     const { token } = body
-    if (!token) return ctx.throw(badRequest('No token'))
     const existingToken = await TokenModel.findOne({ token })
     if (existingToken) {
       existingToken.waitlist = true
