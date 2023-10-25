@@ -12,7 +12,7 @@ interface FirebaseNotificationProps {
   body?: string
   postId?: number
   feedId?: number
-  type?: 'entanglement' | 'newpost'
+  type?: 'entanglement' | 'newpost' | 'waitlist'
 }
 
 export default async function ({
