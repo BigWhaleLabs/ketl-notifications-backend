@@ -13,6 +13,8 @@ export class Token {
   repliesEnabled!: boolean
   @prop({ default: false })
   expired!: boolean
+  @prop()
+  waitlist?: boolean
 }
 
 export function findSettingsByToken(token: string) {

@@ -31,6 +31,36 @@ export default class TokenController {
     }
   }
 
+  @Post('/waitlist')
+  async addWaitlistToken(
+    @Body({ required: true }) body: TokenWithSettings,
+    @Ctx() ctx: Context
+  ) {
+    const { token } = body
+    const existingToken = await TokenModel.findOne({ token })
+    if (existingToken) {
+      existingToken.waitlist = true
+      await existingToken.save()
+      return { success: true }
+    }
+    if (!token) return ctx.throw(badRequest('No token'))
+    const newToken = new TokenModel({ token, waitlist: true })
+    await newToken.save()
+    return { success: true }
+  }
+
+  @Put('/waitlist/:token')
+  async markAsReceived(
+    @Params('token') notificationToken: string,
+    @Ctx() ctx: Context
+  ) {
+    const tokenDoc = await TokenModel.findOne({ token: notificationToken })
+    if (!tokenDoc) return ctx.throw(badRequest('Token not found'))
+    tokenDoc.waitlist = undefined
+    await tokenDoc.save()
+    return { success: true }
+  }
+
   @Put('/:oldToken')
   async replaceToken(
     @Params('oldToken') oldToken: string,
