@@ -5,7 +5,6 @@ import '@/helpers/runNotificationListener'
 import { init as initStorage } from 'node-persist'
 import runApp from '@/helpers/runApp'
 import runMongo from '@/helpers/mongo'
-import runWaitlist from '@/helpers/runWaitlist'
 
 void (async () => {
   console.log('Starting mongo')
@@ -15,6 +14,4 @@ void (async () => {
   await initStorage()
   console.log('Storage connected')
   await runApp()
-  runWaitlist()
-  console.log('Waitlist started')
 })()
