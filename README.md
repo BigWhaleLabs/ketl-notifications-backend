@@ -28,5 +28,6 @@ And you should be good to go! Feel free to fork and submit pull requests.
 | `IPFS_GATEWAY`        | IPFS gateway for resolving content                                 |
 | `HEALTHCHECK_WEBHOOK` | Webhook for healthcheck                                            |
 | `KETL_VIEWS_BACKEND`  | Backend, that counts post views                                    |
+| `PASSWORD`            | Password for protected routes                                      |
 
 Also, please, consider looking at `.env.sample`.

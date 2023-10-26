@@ -32,5 +32,6 @@ export default cleanEnv(process.env, {
   OBSS_STORAGE_CONTRACT_FEEDS: str({
     default: PROD_KETL_FEEDS_CONTRACT_ADDRESS,
   }),
+  PASSWORD: str(),
   PORT: num({ default: 1337 }),
 })

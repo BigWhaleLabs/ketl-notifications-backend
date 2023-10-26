@@ -1,16 +1,31 @@
-import { Controller, Get, Query } from 'amala'
+import { Controller, Flow, Get, Post, Query } from 'amala'
+import { TokenModel } from '@/models/Token'
 import { getLastTimeSentFromStorage } from '@/helpers/lastTimeSent'
 import {
   processCommentsForNotifications,
   processPostsForNotifications,
 } from '@/helpers/proccessBlocksForNotifications'
+import authenticate from '@/helpers/authenticate'
 import defaultProvider from '@/helpers/defaultProvider'
 import getEvents from '@/helpers/getEventst'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
+import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
 @Controller('/notifications')
 export default class NotificationsController {
+  @Post('/waitlist')
+  @Flow(authenticate)
+  async onUpdateWaitlist() {
+    const tokens = await TokenModel.find({ waitlist: true })
+    const tokensToNotify = tokens.map(({ token }) => token).filter(Boolean)
+    if (!tokensToNotify.length) return
+    await sendFirebaseNotification({
+      tokens: tokensToNotify,
+      type: 'waitlist',
+    })
+  }
+
   @Get('/entanglement')
   async getEntanglement(@Query('entanglementType') entanglementType: string) {
     const countBN = await ketlAttestationContract.entanglementsCounts(
