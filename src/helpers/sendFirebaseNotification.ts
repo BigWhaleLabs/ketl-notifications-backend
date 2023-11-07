@@ -2,7 +2,9 @@ import { MulticastMessage, getMessaging } from 'firebase-admin/messaging'
 import { TokenModel } from '@/models/Token'
 import { chunk } from 'lodash'
 import { storeLastTimeSent } from '@/helpers/lastTimeSent'
+import env from '@/helpers/env'
 import firebase from '@/helpers/firebase'
+import mixpanel from '@/helpers/mixpanel'
 
 const messaging = getMessaging(firebase)
 
@@ -69,14 +71,18 @@ export default async function ({
       const notificationErrorStrings =
         /(registration-token-not-registered|invalid-registration-token)/
       const tokensToDelete: string[] = []
+      let successful = 0
+      let unsuccessful = 0
       response.responses.forEach(async (response, index) => {
         const token = chunk[index]
         if (response.success) {
           console.log(response)
           await storeLastTimeSent(Date.now())
+          successful += 1
           return
         }
         if (!response.error) return
+        unsuccessful += 1
         const errorCode = response.error.code
 
         if (notificationErrorStrings.test(errorCode)) {
@@ -85,6 +91,17 @@ export default async function ({
           return
         }
         console.error(errorCode, response.error)
+      })
+      await mixpanel.track('NOTIFICATION', {
+        distinct_id: 'notification server',
+        ...(type === 'newpost' && {
+          feedId,
+          postId,
+        }),
+        isDev: !env.PRODUCTION,
+        successful,
+        type,
+        unsuccessful,
       })
       await TokenModel.updateMany(
         { token: { $in: tokensToDelete } },

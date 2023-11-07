@@ -15,19 +15,20 @@ And you should be good to go! Feel free to fork and submit pull requests.
 
 ## Environment variables
 
-| Name                  | Description                                                        |
-| --------------------- | ------------------------------------------------------------------ |
-| `MONGO`               | URL of the mongo database                                          |
-| `PORT`                | Port to run server on (defaults to 1337)                           |
-| `APN_KEY_ID`          | APN key ID for sending iOS notifications                           |
-| `APN_TEAM_ID`         | APN team ID for sending iOS notifications                          |
-| `BUNDLE_ID`           | Bundle ID for iOS notifications                                    |
-| `ETH_RPC`             | Ethereum RPC endpoint for notifications                            |
-| `ETH_NETWORK`         | Ethereum network for notifications                                 |
-| `NODE_ENV`            | ENV of the project. Could be "development", "production" or "test" |
-| `IPFS_GATEWAY`        | IPFS gateway for resolving content                                 |
-| `HEALTHCHECK_WEBHOOK` | Webhook for healthcheck                                            |
-| `KETL_VIEWS_BACKEND`  | Backend, that counts post views                                    |
-| `PASSWORD`            | Password for protected routes                                      |
+| Name                     | Description                                                        |
+| ------------------------ | ------------------------------------------------------------------ |
+| `MONGO`                  | URL of the mongo database                                          |
+| `PORT`                   | Port to run server on (defaults to 1337)                           |
+| `APN_KEY_ID`             | APN key ID for sending iOS notifications                           |
+| `APN_TEAM_ID`            | APN team ID for sending iOS notifications                          |
+| `BUNDLE_ID`              | Bundle ID for iOS notifications                                    |
+| `ETH_RPC`                | Ethereum RPC endpoint for notifications                            |
+| `ETH_NETWORK`            | Ethereum network for notifications                                 |
+| `NODE_ENV`               | ENV of the project. Could be "development", "production" or "test" |
+| `IPFS_GATEWAY`           | IPFS gateway for resolving content                                 |
+| `HEALTHCHECK_WEBHOOK`    | Webhook for healthcheck                                            |
+| `KETL_VIEWS_BACKEND`     | Backend, that counts post views                                    |
+| `PASSWORD`               | Password for protected routes                                      |
+| `MIXPANEL_PROJECT_TOKEN` | Your Mixpanel project Token for                                    |
 
 Also, please, consider looking at `.env.sample`.
