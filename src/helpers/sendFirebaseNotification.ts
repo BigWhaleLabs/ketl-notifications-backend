@@ -92,7 +92,7 @@ export default async function ({
         }
         console.error(errorCode, response.error)
       })
-      await mixpanel.track('NOTIFICATION', {
+      await mixpanel.track('NotificationStats', {
         distinct_id: 'notification server',
         ...(type === 'newpost' && {
           feedId,
