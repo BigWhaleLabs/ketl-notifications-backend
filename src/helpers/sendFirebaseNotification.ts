@@ -77,7 +77,6 @@ export default async function ({
         const token = chunk[index]
         if (response.success) {
           console.log(response)
-          await storeLastTimeSent(Date.now())
           successful += 1
           return
         }
@@ -111,6 +110,7 @@ export default async function ({
         { token: { $in: tokensToDelete } },
         { expired: true }
       )
+      await storeLastTimeSent(Date.now())
     } catch (e) {
       console.error(e)
     }
