@@ -92,12 +92,16 @@ export default async function ({
         }
         console.error(errorCode, response.error)
       })
+      const params =
+        type === 'newpost'
+          ? {
+              feedId,
+              postId,
+            }
+          : {}
       await mixpanel.track('NotificationStats', {
+        ...params,
         distinct_id: 'notification server',
-        ...(type === 'newpost' && {
-          feedId,
-          postId,
-        }),
         isDev: !env.PRODUCTION,
         successful,
         type,
