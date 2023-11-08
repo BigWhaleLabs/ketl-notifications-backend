@@ -7,7 +7,7 @@ import {
   PROD_KETL_FEEDS_CONTRACT_ADDRESS,
   PROD_KETL_OBSS_CONTRACT_ADDRESS,
 } from '@big-whale-labs/constants'
-import { cleanEnv, num, str } from 'envalid'
+import { bool, cleanEnv, num, str } from 'envalid'
 import { cwd } from 'process'
 import { resolve } from 'path'
 
@@ -25,6 +25,7 @@ export default cleanEnv(process.env, {
     default: PROD_KETL_ATTESTATION_CONTRACT,
   }),
   KETL_VIEWS_BACKEND: str({ default: KETL_VIEWS_BACKEND }),
+  MIXPANEL_PROJECT_TOKEN: str(),
   MONGO: str(),
   OBSS_STORAGE_CONTRACT: str({
     default: PROD_KETL_OBSS_CONTRACT_ADDRESS,
@@ -34,4 +35,5 @@ export default cleanEnv(process.env, {
   }),
   PASSWORD: str(),
   PORT: num({ default: 1337 }),
+  PRODUCTION: bool({ default: false }),
 })
