@@ -73,7 +73,7 @@ export default async function ({
       const tokensToDelete: string[] = []
       let successful = 0
       let unsuccessful = 0
-      response.responses.forEach(async (response, index) => {
+      response.responses.forEach((response, index) => {
         const token = chunk[index]
         if (response.success) {
           console.log(response)
