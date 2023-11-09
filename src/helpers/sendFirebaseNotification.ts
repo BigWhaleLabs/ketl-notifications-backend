@@ -73,11 +73,10 @@ export default async function ({
       const tokensToDelete: string[] = []
       let successful = 0
       let unsuccessful = 0
-      response.responses.forEach(async (response, index) => {
+      response.responses.forEach((response, index) => {
         const token = chunk[index]
         if (response.success) {
           console.log(response)
-          await storeLastTimeSent(Date.now())
           successful += 1
           return
         }
@@ -111,6 +110,7 @@ export default async function ({
         { token: { $in: tokensToDelete } },
         { expired: true }
       )
+      await storeLastTimeSent(Date.now())
     } catch (e) {
       console.error(e)
     }
