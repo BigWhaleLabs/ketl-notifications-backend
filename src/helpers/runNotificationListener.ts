@@ -8,17 +8,27 @@ import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import sendPost from '@/helpers/sendPost'
 
-ketlAttestationContract.on('EntanglementRegistered', async () => {
-  try {
-    const tokens = await getTokens()
-    await sendFirebaseNotification({
-      tokens,
-      type: 'entanglement',
-    })
-  } catch (err) {
-    console.error(err)
+ketlAttestationContract.on(
+  'EntanglementRegistered',
+  async (attestationType: BigNumber) => {
+    try {
+      const minimum = await ketlAttestationContract.minimumEntanglementCounts(
+        attestationType
+      )
+      const current = await ketlAttestationContract.entanglementsCounts(
+        attestationType
+      )
+      if (current.gt(minimum)) return
+      const tokens = await getTokens()
+      await sendFirebaseNotification({
+        tokens,
+        type: 'entanglement',
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
-})
+)
 
 getFeedsContract.on(
   'CommentAdded',
