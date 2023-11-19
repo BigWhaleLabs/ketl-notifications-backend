@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv'
 import {
   ETH_RPC as BWL_ETH_RPC,
   ETH_MUMBAI_NETWORK,
+  KETL_MODERATION_BACKEND,
   KETL_VIEWS_BACKEND,
   PROD_KETL_ATTESTATION_CONTRACT,
   PROD_KETL_FEEDS_CONTRACT_ADDRESS,
@@ -23,6 +24,9 @@ export default cleanEnv(process.env, {
   IPFS_GATEWAY: str({ default: 'https://ipfs.sealcred.xyz/ipfs' }),
   KETL_ATTESTATION_CONTRACT: str({
     default: PROD_KETL_ATTESTATION_CONTRACT,
+  }),
+  KETL_MODERATION_BACKEND: str({
+    default: KETL_MODERATION_BACKEND,
   }),
   KETL_VIEWS_BACKEND: str({ default: KETL_VIEWS_BACKEND }),
   MIXPANEL_PROJECT_TOKEN: str(),

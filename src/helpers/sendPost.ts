@@ -4,6 +4,7 @@ import { getItem, setItem } from 'node-persist'
 import { getTokens } from '@/models/Token'
 import feedsData from '@/helpers/feedsData'
 import getIPFSContent from '@/helpers/getIPFSContent'
+import isBanned from '@/helpers/isBannedPost'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
 
@@ -17,6 +18,7 @@ export default async function sendPost(
   postId: number,
   [author, metadata]: PostStructOutput
 ) {
+  if (await isBanned(feedId, postId)) return
   if (await didSendPost(feedId, postId)) return
 
   const feedName = feedsData[feedId]
