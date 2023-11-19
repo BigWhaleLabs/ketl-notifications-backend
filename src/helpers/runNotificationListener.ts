@@ -39,8 +39,8 @@ getFeedsContract.on(
       const numberPostId = postId.toNumber()
       const numberCommentId = commentId.toNumber()
       if (
-        (await isBanned(feedId, postId)) ||
-        (await isBanned(feedId, postId, commentId))
+        (await isBanned(numberFeedId, numberPostId)) ||
+        (await isBanned(numberFeedId, numberPostId, numberCommentId))
       )
         return
       const tokens = await getTokens({ repliesEnabled: true })
