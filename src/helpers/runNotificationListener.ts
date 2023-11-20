@@ -38,11 +38,7 @@ getFeedsContract.on(
       const numberFeedId = feedId.toNumber()
       const numberPostId = postId.toNumber()
       const numberCommentId = commentId.toNumber()
-      if (
-        (await isBanned(numberFeedId, numberPostId)) ||
-        (await isBanned(numberFeedId, numberPostId, numberCommentId))
-      )
-        return
+      if (await isBanned(numberFeedId, numberPostId)) return
       const tokens = await getTokens({ repliesEnabled: true })
       await sendFirebaseNotification({ tokens })
 
