@@ -3,6 +3,7 @@ import {
   PostAddedEvent,
 } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { generateRandomName } from '@big-whale-labs/backend-utils'
+import feedsData from '@/helpers/feedsData'
 import structToCid from '@/helpers/structToCid'
 
 export function parseComment(commentEvent: CommentAddedEvent) {
@@ -16,6 +17,7 @@ export function parseComment(commentEvent: CommentAddedEvent) {
   return {
     commentId,
     feedId,
+    feedName: feedsData[feedId],
     metadata: structToCid(metadata),
     numberOfComments: numberOfComments.toNumber(),
     postId,
@@ -36,6 +38,7 @@ export function parsePost(postEvent: PostAddedEvent) {
     post
   return {
     feedId,
+    feedName: feedsData[feedId],
     metadata: structToCid(metadata),
     numberOfComments: numberOfComments.toNumber(),
     postId,
