@@ -2,6 +2,7 @@ import { getItem, setItem } from 'node-persist'
 import { getTokens } from '@/models/Token'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import getIPFSContent from '@/helpers/getIPFSContent'
+import isBanned from '@/helpers/isBannedPost'
 import isHotPost from '@/helpers/isHotPost'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import structToCid from '@/helpers/structToCid'
@@ -15,6 +16,7 @@ export default async function checkAndSendHotPost(
   feedId: number,
   postId: number
 ) {
+  if (await isBanned(feedId, postId)) return
   if (await didSendHotPost(feedId, postId)) return
 
   const isHot = await isHotPost(feedId, postId)

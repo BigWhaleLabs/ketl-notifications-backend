@@ -4,6 +4,7 @@ import { getTokens } from '@/models/Token'
 import { minimumNumberOfComments } from '@/data/hotPost'
 import checkAndSendHotPost from '@/helpers/sendHotPost'
 import getFeedsContract from '@/helpers/getFeedsContract'
+import isBanned from '@/helpers/isBannedPost'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 import sendPost from '@/helpers/sendPost'
@@ -34,13 +35,14 @@ getFeedsContract.on(
   'CommentAdded',
   async (feedId: BigNumber, postId: BigNumber, commentId: BigNumber) => {
     try {
+      const numberFeedId = feedId.toNumber()
+      const numberPostId = postId.toNumber()
+      const numberCommentId = commentId.toNumber()
+      if (await isBanned(numberFeedId, numberPostId)) return
       const tokens = await getTokens({ repliesEnabled: true })
       await sendFirebaseNotification({ tokens })
 
-      if (commentId.toNumber() !== minimumNumberOfComments) return
-      const numberFeedId = feedId.toNumber()
-      const numberPostId = postId.toNumber()
-
+      if (numberCommentId !== minimumNumberOfComments) return
       await checkAndSendHotPost(numberFeedId, numberPostId)
     } catch (e) {
       console.error(e)
