@@ -33,12 +33,22 @@ ketlAttestationContract.on(
 
 getFeedsContract.on(
   'CommentAdded',
-  async (feedId: BigNumber, postId: BigNumber, commentId: BigNumber) => {
+  async (
+    feedId: BigNumber,
+    postId: BigNumber,
+    commentId: BigNumber,
+    comment: PostStructOutput
+  ) => {
     try {
       const numberFeedId = feedId.toNumber()
       const numberPostId = postId.toNumber()
       const numberCommentId = commentId.toNumber()
-      if (await isBanned(numberFeedId, numberPostId)) return
+      const replyTo = comment.replyTo.toNumber()
+      if (
+        (await isBanned(numberFeedId, numberPostId)) ||
+        (await isBanned(numberFeedId, numberPostId, replyTo))
+      )
+        return
       const tokens = await getTokens({ repliesEnabled: true })
       await sendFirebaseNotification({ tokens })
 
