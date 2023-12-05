@@ -1,12 +1,21 @@
 import axios from 'axios'
 import env from '@/helpers/env'
 
-export async function isBannedPost(feedId: number, postId: number) {
-  const { data } = await axios.get<boolean>(
-    `${env.KETL_MODERATION_BACKEND}/hidden/${feedId}/${postId}/post`
-  )
+function isContentNotHidden(e: unknown) {
+  return axios.isAxiosError(e) && e.response?.status === 404
+}
 
-  return data
+export async function isBannedPost(feedId: number, postId: number) {
+  try {
+    const { data } = await axios.get<boolean>(
+      `${env.KETL_MODERATION_BACKEND}/hidden/${feedId}/${postId}/post`
+    )
+
+    return data
+  } catch (e) {
+    if (isContentNotHidden(e)) return false
+    console.error(e)
+  }
 }
 
 export async function isBannedComment(
@@ -14,11 +23,16 @@ export async function isBannedComment(
   postId: number,
   commendId: number
 ) {
-  const { data } = await axios.get<boolean>(
-    `${env.KETL_MODERATION_BACKEND}/hidden/${feedId}/${postId}/${commendId}`
-  )
+  try {
+    const { data } = await axios.get<boolean>(
+      `${env.KETL_MODERATION_BACKEND}/hidden/${feedId}/${postId}/${commendId}`
+    )
 
-  return data
+    return data
+  } catch (e) {
+    if (isContentNotHidden(e)) return false
+    console.error(e)
+  }
 }
 
 export default function isBanned(
