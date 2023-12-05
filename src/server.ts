@@ -5,6 +5,7 @@ import '@/helpers/runNotificationListener'
 import { init as initStorage } from 'node-persist'
 import runApp from '@/helpers/runApp'
 import runMongo from '@/helpers/mongo'
+import saveBlockchainEvents from '@/helpers/saveBlockchainEvents'
 
 void (async () => {
   console.log('Starting mongo')
@@ -14,4 +15,5 @@ void (async () => {
   await initStorage()
   console.log('Storage connected')
   await runApp()
+  await saveBlockchainEvents()
 })()

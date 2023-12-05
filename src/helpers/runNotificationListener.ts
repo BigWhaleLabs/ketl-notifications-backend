@@ -1,7 +1,12 @@
 import { BigNumber } from 'ethers'
-import { PostStructOutput } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
+import {
+  CommentAddedEvent,
+  PostAddedEvent,
+  PostStructOutput,
+} from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
 import { getTokens } from '@/models/Token'
 import { minimumNumberOfComments } from '@/data/hotPost'
+import { saveCommentEvent, savePostEvent } from '@/helpers/saveBlockchainEvents'
 import checkAndSendHotPost from '@/helpers/sendHotPost'
 import getFeedsContract from '@/helpers/getFeedsContract'
 import isBanned from '@/helpers/isBannedPost'
@@ -37,7 +42,8 @@ getFeedsContract.on(
     feedId: BigNumber,
     postId: BigNumber,
     commentId: BigNumber,
-    comment: PostStructOutput
+    comment: PostStructOutput,
+    commentEvent: CommentAddedEvent
   ) => {
     try {
       const numberFeedId = feedId.toNumber()
@@ -49,6 +55,9 @@ getFeedsContract.on(
         (await isBanned(numberFeedId, numberPostId, replyTo))
       )
         return
+
+      await saveCommentEvent(commentEvent)
+
       const tokens = await getTokens({ repliesEnabled: true })
       await sendFirebaseNotification({ tokens })
 
@@ -62,11 +71,18 @@ getFeedsContract.on(
 
 getFeedsContract.on(
   'PostAdded',
-  async (feedId: BigNumber, postId: BigNumber, post: PostStructOutput) => {
+  async (
+    feedId: BigNumber,
+    postId: BigNumber,
+    post: PostStructOutput,
+    _author: string,
+    postEvent: PostAddedEvent
+  ) => {
     try {
       const numberFeedId = feedId.toNumber()
       const numberPostId = postId.toNumber()
 
+      await savePostEvent(postEvent)
       await sendPost(numberFeedId, numberPostId, post)
     } catch (e) {
       console.error(e)
