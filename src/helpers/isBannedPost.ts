@@ -1,6 +1,10 @@
 import axios from 'axios'
 import env from '@/helpers/env'
 
+function isContentNotHidden(e: unknown) {
+  return axios.isAxiosError(e) && e.response?.status === 404
+}
+
 export async function isBannedPost(feedId: number, postId: number) {
   try {
     const { data } = await axios.get<boolean>(
@@ -9,7 +13,7 @@ export async function isBannedPost(feedId: number, postId: number) {
 
     return data
   } catch (e) {
-    if (axios.isAxiosError(e) && e.response?.status === 404) return false
+    if (isContentNotHidden(e)) return false
     console.error(e)
   }
 }
@@ -26,7 +30,7 @@ export async function isBannedComment(
 
     return data
   } catch (e) {
-    if (axios.isAxiosError(e) && e.response?.status === 404) return false
+    if (isContentNotHidden(e)) return false
     console.error(e)
   }
 }
