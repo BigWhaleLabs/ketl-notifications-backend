@@ -40,7 +40,7 @@ export default class NotificationsController {
   async getData(@Query('currentBlockNumber') currentBlockNumber?: number) {
     const currentBlock = await defaultProvider.getBlockNumber()
 
-    if (!currentBlockNumber)
+    if (Number.isNaN(currentBlockNumber))
       return {
         currentBlock,
         modifiedCommentSinceLastCheck: [],
