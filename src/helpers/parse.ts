@@ -7,17 +7,15 @@ import structToCid from '@/helpers/structToCid'
 
 function transform(post: PostStructOutput) {
   const [sender, metadata] = post
-  const [timestamp, threadId, replyTo, numberOfComments] = post
-    .slice(2)
-    .map(Number)
+  const [, , timestamp, threadId, replyTo, numberOfComments] = post.map(Number)
 
   return {
     metadata: structToCid(metadata),
-    numberOfComments: numberOfComments,
-    replyTo: replyTo,
+    numberOfComments,
+    replyTo,
     sender,
-    threadId: threadId,
-    timestamp: timestamp,
+    threadId,
+    timestamp,
   }
 }
 

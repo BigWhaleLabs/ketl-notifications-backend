@@ -5,6 +5,7 @@ import { TokenModel } from '@/models/Token'
 import { getLastTimeSentFromStorage } from '@/helpers/lastTimeSent'
 import authenticate from '@/helpers/authenticate'
 import defaultProvider from '@/helpers/defaultProvider'
+import docsToObject from '@/helpers/docsToObject'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
@@ -46,13 +47,13 @@ export default class NotificationsController {
         modifiedPostsSinceLastCheck: [],
       }
 
-    const modifiedCommentSinceLastCheck = await CommentModel.find(
+    const commentSinceLastCheck = await CommentModel.find(
       {
         blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
       },
       defaultPostProjection
     )
-    const modifiedPostsSinceLastCheck = await PostModel.find(
+    const postsSinceLastCheck = await PostModel.find(
       {
         blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
       },
@@ -61,12 +62,8 @@ export default class NotificationsController {
 
     return {
       currentBlock,
-      modifiedCommentSinceLastCheck: modifiedCommentSinceLastCheck.map(
-        (comment) => comment.toObject({ virtuals: true })
-      ),
-      modifiedPostsSinceLastCheck: modifiedPostsSinceLastCheck.map((post) =>
-        post.toObject({ virtuals: true })
-      ),
+      modifiedCommentSinceLastCheck: docsToObject(commentSinceLastCheck),
+      modifiedPostsSinceLastCheck: docsToObject(postsSinceLastCheck),
     }
   }
 
