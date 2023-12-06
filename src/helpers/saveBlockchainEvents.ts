@@ -12,7 +12,11 @@ export async function savePostEvent(event: PostAddedEvent) {
   try {
     const post = parsePost(event)
     await PostModel.findOneAndUpdate(
-      { transactionHash: post.transactionHash },
+      {
+        feedId: post.feedId,
+        postId: post.postId,
+        transactionHash: post.transactionHash,
+      },
       post,
       {
         new: true,
@@ -28,7 +32,12 @@ export async function saveCommentEvent(event: CommentAddedEvent) {
   try {
     const comment = parseComment(event)
     await CommentModel.findOneAndUpdate(
-      { transactionHash: comment.transactionHash },
+      {
+        commentId: comment.commentId,
+        feedId: comment.feedId,
+        postId: comment.postId,
+        transactionHash: comment.transactionHash,
+      },
       comment,
       { new: true, upsert: true }
     )

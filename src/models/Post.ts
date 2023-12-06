@@ -6,7 +6,7 @@ import { generateRandomName } from '@big-whale-labs/backend-utils'
   schemaOptions: { id: false, timestamps: true, virtuals: true },
 })
 export class Post extends TimeStamps {
-  @prop({ required: true, unique: true })
+  @prop({ required: true })
   transactionHash!: string
   @prop({ required: true })
   public blockNumber!: number
@@ -34,7 +34,7 @@ export class Post extends TimeStamps {
 
 export const PostModel = getModelForClass(Post)
 
-export const defaultProjection = {
+export const defaultPostProjection = {
   _id: 0,
   commentId: 1,
   feedId: 1,

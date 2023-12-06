@@ -1,6 +1,6 @@
 import { CommentModel } from '@/models/Comment'
 import { Controller, Flow, Get, Post, Query } from 'amala'
-import { PostModel, defaultProjection } from '@/models/Post'
+import { PostModel, defaultPostProjection } from '@/models/Post'
 import { TokenModel } from '@/models/Token'
 import { getLastTimeSentFromStorage } from '@/helpers/lastTimeSent'
 import authenticate from '@/helpers/authenticate'
@@ -50,13 +50,13 @@ export default class NotificationsController {
       {
         blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
       },
-      defaultProjection
+      defaultPostProjection
     )
     const modifiedPostsSinceLastCheck = await PostModel.find(
       {
         blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
       },
-      defaultProjection
+      defaultPostProjection
     )
 
     return {
