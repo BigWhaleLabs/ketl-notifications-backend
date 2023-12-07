@@ -1,11 +1,10 @@
-import { CommentModel } from '@/models/Comment'
 import { Controller, Flow, Get, Post, Query } from 'amala'
 import { PostModel, defaultPostProjection } from '@/models/Post'
 import { TokenModel } from '@/models/Token'
+import { getComments } from '@/models/Comment'
 import { getLastTimeSentFromStorage } from '@/helpers/lastTimeSent'
 import authenticate from '@/helpers/authenticate'
 import defaultProvider from '@/helpers/defaultProvider'
-import docsToObject from '@/helpers/docsToObject'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
@@ -37,7 +36,10 @@ export default class NotificationsController {
   }
 
   @Get('/')
-  async getData(@Query('currentBlockNumber') currentBlockNumber?: number) {
+  async getData(
+    @Query('currentBlockNumber') currentBlockNumber?: number,
+    @Query('isDev') isDev?: boolean
+  ) {
     const currentBlock = await defaultProvider.getBlockNumber()
 
     if (Number.isNaN(currentBlockNumber))
@@ -47,13 +49,12 @@ export default class NotificationsController {
         modifiedPostsSinceLastCheck: [],
       }
 
-    const commentSinceLastCheck = await CommentModel.find(
-      {
-        blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
-      },
-      defaultPostProjection
-    )
-    const postsSinceLastCheck = await PostModel.find(
+    const modifiedCommentSinceLastCheck = await getComments({
+      fromBlock: currentBlockNumber,
+      isDev,
+      toBlock: currentBlock,
+    })
+    const modifiedPostsSinceLastCheck = await PostModel.find(
       {
         blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
       },
@@ -62,8 +63,8 @@ export default class NotificationsController {
 
     return {
       currentBlock,
-      modifiedCommentSinceLastCheck: docsToObject(commentSinceLastCheck),
-      modifiedPostsSinceLastCheck: docsToObject(postsSinceLastCheck),
+      modifiedCommentSinceLastCheck,
+      modifiedPostsSinceLastCheck,
     }
   }
 
