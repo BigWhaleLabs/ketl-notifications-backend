@@ -35,8 +35,22 @@ export function getComments({
       },
     },
     {
+      $lookup: {
+        as: 'replyToPost',
+        foreignField: 'postId',
+        from: 'posts',
+        localField: 'postId',
+      },
+    },
+    {
       $unwind: {
         path: '$replyToComment',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $unwind: {
+        path: '$replyToPost',
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -60,12 +74,32 @@ export function getComments({
             },
           },
         },
+        replyToPost: {
+          $cond: {
+            else: null,
+            if: {
+              $and: [
+                { $eq: ['$replyToPost.postId', '$postId'] },
+                { $eq: ['$replyToPost.isDev', isDev] },
+                { $eq: ['$replyTo', 0] },
+              ],
+            },
+            then: {
+              metadata: '$replyToPost.metadata',
+              postId: '$replyToPost.postId',
+              sender: '$replyToPost.sender',
+              timestamp: '$replyToPost.timestamp',
+              username: '$replyToPost.username',
+            },
+          },
+        },
       },
     },
     {
       $project: {
         ...defaultPostProjection,
         replyToComment: 1,
+        replyToPost: 1,
       },
     },
   ])
