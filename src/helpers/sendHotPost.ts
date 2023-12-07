@@ -31,10 +31,10 @@ export default async function checkAndSendHotPost(
   const hotPostTokens = await getTokens({ hotPostsEnabled: true })
 
   await sendFirebaseNotification({
-    body: content.extraText,
+    body: content.text,
     feedId,
     postId,
-    title: `🔥 trending now: ${content.text}`,
+    title: `🔥 trending now`,
     tokens: hotPostTokens,
   })
 
