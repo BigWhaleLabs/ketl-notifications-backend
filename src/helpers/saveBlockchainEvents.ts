@@ -71,7 +71,12 @@ export async function saveCommentEvent(
 }
 
 export default async function saveBlockchainEvents() {
-  const posts = await getEvents(getFeedsContract.filters.PostAdded())
+  const findLatest = await CommentModel.findOne({}).sort({ blockNumber: -1 })
+
+  const posts = await getEvents(
+    getFeedsContract.filters.PostAdded(),
+    findLatest?.blockNumber ? findLatest.blockNumber - 1 : undefined
+  )
 
   for (const post of posts) {
     await savePostEvent(post)
