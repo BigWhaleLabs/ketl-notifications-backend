@@ -1,9 +1,8 @@
 import { ModelOptions, getModelForClass, prop } from '@typegoose/typegoose'
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
-import { generateRandomName } from '@big-whale-labs/backend-utils'
 
 @ModelOptions({
-  schemaOptions: { id: false, timestamps: true, virtuals: true },
+  schemaOptions: { id: false, timestamps: true },
 })
 export class Post extends TimeStamps {
   @prop({ required: true })
@@ -26,10 +25,8 @@ export class Post extends TimeStamps {
   public sender!: string
   @prop({ required: true })
   public numberOfComments!: number
-
-  public get username() {
-    return generateRandomName(this.sender)
-  }
+  @prop({ required: true })
+  public username!: string
 }
 
 export const PostModel = getModelForClass(Post)

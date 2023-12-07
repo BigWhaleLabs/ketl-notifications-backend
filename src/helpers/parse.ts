@@ -3,6 +3,7 @@ import {
   PostAddedEvent,
   PostStructOutput,
 } from '@big-whale-labs/obss-storage-contract/dist/typechain/contracts/Feeds'
+import { generateRandomName } from '@big-whale-labs/backend-utils'
 import structToCid from '@/helpers/structToCid'
 
 function transform(post: PostStructOutput) {
@@ -16,6 +17,7 @@ function transform(post: PostStructOutput) {
     sender,
     threadId,
     timestamp,
+    username: generateRandomName(sender),
   }
 }
 
