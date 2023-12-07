@@ -62,6 +62,8 @@ export function getComments({
             if: {
               $and: [
                 { $eq: ['$replyToComment.commentId', '$replyTo'] },
+                { $eq: ['$replyToComment.postId', '$postId'] },
+                { $eq: ['$replyToComment.feedId', '$feedId'] },
                 { $eq: ['$replyToComment.isDev', isDev] },
               ],
             },
@@ -80,6 +82,7 @@ export function getComments({
             if: {
               $and: [
                 { $eq: ['$replyToPost.postId', '$postId'] },
+                { $eq: ['$replyToPost.feedId', '$feedId'] },
                 { $eq: ['$replyToPost.isDev', isDev] },
                 { $eq: ['$replyTo', 0] },
               ],
