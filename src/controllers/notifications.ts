@@ -1,14 +1,11 @@
+import { CommentModel } from '@/models/Comment'
 import { Controller, Flow, Get, Post, Query } from 'amala'
+import { PostModel, defaultPostProjection } from '@/models/Post'
 import { TokenModel } from '@/models/Token'
 import { getLastTimeSentFromStorage } from '@/helpers/lastTimeSent'
-import {
-  processCommentsForNotifications,
-  processPostsForNotifications,
-} from '@/helpers/proccessBlocksForNotifications'
 import authenticate from '@/helpers/authenticate'
 import defaultProvider from '@/helpers/defaultProvider'
-import getEvents from '@/helpers/getEventst'
-import getFeedsContract from '@/helpers/getFeedsContract'
+import docsToObject from '@/helpers/docsToObject'
 import ketlAttestationContract from '@/helpers/getKetlAttestation'
 import sendFirebaseNotification from '@/helpers/sendFirebaseNotification'
 
@@ -42,30 +39,34 @@ export default class NotificationsController {
   @Get('/')
   async getData(@Query('currentBlockNumber') currentBlockNumber?: number) {
     const currentBlock = await defaultProvider.getBlockNumber()
-    const commentsSinceLastCheck = await getEvents(
-      getFeedsContract.filters.CommentAdded(),
-      currentBlockNumber ? currentBlockNumber + 1 : currentBlock,
-      currentBlock
-    )
-    const postsSinceLastCheck = await getEvents(
-      getFeedsContract.filters.PostAdded(),
-      currentBlockNumber ? currentBlockNumber + 1 : currentBlock,
-      currentBlock
-    )
 
-    const modifiedPostsSinceLastCheck =
-      processPostsForNotifications(postsSinceLastCheck)
+    if (Number.isNaN(currentBlockNumber))
+      return {
+        currentBlock,
+        modifiedCommentSinceLastCheck: [],
+        modifiedPostsSinceLastCheck: [],
+      }
 
-    const modifiedCommentSinceLastCheck = processCommentsForNotifications(
-      commentsSinceLastCheck
+    const commentSinceLastCheck = await CommentModel.find(
+      {
+        blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
+      },
+      defaultPostProjection
+    )
+    const postsSinceLastCheck = await PostModel.find(
+      {
+        blockNumber: { $gt: currentBlockNumber, $lte: currentBlock },
+      },
+      defaultPostProjection
     )
 
     return {
       currentBlock,
-      modifiedCommentSinceLastCheck,
-      modifiedPostsSinceLastCheck,
+      modifiedCommentSinceLastCheck: docsToObject(commentSinceLastCheck),
+      modifiedPostsSinceLastCheck: docsToObject(postsSinceLastCheck),
     }
   }
+
   @Get('/lastTimeSent')
   getLastTimeSent() {
     return getLastTimeSentFromStorage()
