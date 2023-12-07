@@ -8,12 +8,13 @@ import { parseComment, parsePost } from '@/helpers/parse'
 import getEvents from '@/helpers/getEventst'
 import getFeedsContract from '@/helpers/getFeedsContract'
 
-export async function savePostEvent(event: PostAddedEvent) {
+export async function savePostEvent(event: PostAddedEvent, isDev = false) {
   try {
     const post = parsePost(event)
     await PostModel.findOneAndUpdate(
       {
         feedId: post.feedId,
+        isDev,
         postId: post.postId,
         transactionHash: post.transactionHash,
       },
@@ -28,17 +29,40 @@ export async function savePostEvent(event: PostAddedEvent) {
   }
 }
 
-export async function saveCommentEvent(event: CommentAddedEvent) {
+export async function saveCommentEvent(
+  event: CommentAddedEvent,
+  isDev = false
+) {
   try {
     const comment = parseComment(event)
+    let replyToPost, replyToComment
+    if (comment.replyTo === 0) {
+      replyToPost = await PostModel.findOne({
+        feedId: comment.feedId,
+        isDev,
+        postId: comment.postId,
+      })
+    } else {
+      replyToComment = await CommentModel.findOne({
+        commentId: comment.replyTo,
+        feedId: comment.feedId,
+        isDev,
+        postId: comment.postId,
+      })
+    }
     await CommentModel.findOneAndUpdate(
       {
         commentId: comment.commentId,
         feedId: comment.feedId,
+        isDev,
         postId: comment.postId,
         transactionHash: comment.transactionHash,
       },
-      comment,
+      {
+        ...comment,
+        replyToComment,
+        replyToPost,
+      },
       { new: true, upsert: true }
     )
   } catch (e) {
